@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SmartSoilTelemetryPayload",
+  "description": "Cross-team data interchange contract between ESP32 (Aryan), FastAPI/Firebase (Chetan), AI/ML Model (Abhinav), and Flutter App (Chaitanya).",
+  "type": "object",
+  "required": ["id", "farmer_id", "device_id", "timestamp", "reading"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique record identifier"
+    },
+    "farmer_id": {
+      "type": "string",
+      "description": "Firebase Auth user ID of the farmer"
+    },
+    "device_id": {
+      "type": "string",
+      "description": "Unique ESP32 hardware identifier"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 UTC timestamp of measurement"
+    },
+    "is_simulated": {
+      "type": "boolean",
+      "default": false,
+      "description": "True for Sprint 1/2 synthetic data, False for live ESP32 hardware"
+    },
+    "reading": {
+      "type": "object",
+      "required": ["ph", "moisture", "nitrogen", "phosphorus", "potassium", "temperature", "humidity"],
+      "properties": {
+        "ph": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 14.0,
+          "description": "Soil pH level (optimal: 6.0 - 7.5)"
+        },
+        "moisture": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 100.0,
+          "description": "Soil volumetric moisture percentage (optimal: 40.0 - 70.0%)"
+        },
+        "nitrogen": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 500.0,
+          "description": "Available Nitrogen in mg/kg (optimal: 50.0 - 140.0)"
+        },
+        "phosphorus": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 300.0,
+          "description": "Available Phosphorus in mg/kg (optimal: 20.0 - 50.0)"
+        },
+        "potassium": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 600.0,
+          "description": "Available Potassium in mg/kg (optimal: 100.0 - 250.0)"
+        },
+        "temperature": {
+          "type": "number",
+          "minimum": -10.0,
+          "maximum": 60.0,
+          "description": "Soil/ambient temperature in degrees Celsius (optimal: 18.0 - 30.0 °C)"
+        },
+        "humidity": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 100.0,
+          "description": "Ambient relative humidity percentage from DHT22 (optimal: 40.0 - 75.0%)"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "battery_level": { "type": "number" },
+        "wifi_rssi": { "type": "number" },
+        "firmware_version": { "type": "string" }
+      }
+    }
+  }
+}
