@@ -61,3 +61,6 @@ Thumbs.db
 # Hardware
 **/.pio/
 **/.pioenvs/
+
+#firebase-service-account.json
+firebase-service-account.json
