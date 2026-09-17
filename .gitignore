@@ -36,7 +36,31 @@ migrate_working_dir/
 **/.venv/
 **/venv/
 **/env/
+# Python virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Test cache
+.pytest_cache/
+
+# Environment variables
+.env
+.env.*
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
 
 # Hardware
 **/.pio/
 **/.pioenvs/
+
+#firebase-service-account.json
+firebase-service-account.json
