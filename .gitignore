@@ -62,5 +62,6 @@ Thumbs.db
 **/.pio/
 **/.pioenvs/
 
-#firebase-service-account.json
+#firebase keys and json files 
 firebase-service-account.json
+.env

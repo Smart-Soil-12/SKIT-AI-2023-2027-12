@@ -50,3 +50,20 @@ def get_latest_soil_reading():
         return reading
 
     return None
+
+def get_farmer_soil_readings(farmer_id):
+    docs = (
+        db.collection("soil_readings")
+        .where("farmer_id", "==", farmer_id)
+        .order_by("timestamp", direction=firestore.Query.DESCENDING)
+        .stream()
+    )
+
+    readings = []
+
+    for doc in docs:
+        reading = doc.to_dict()
+        reading["id"] = doc.id
+        readings.append(reading)
+
+    return readings
