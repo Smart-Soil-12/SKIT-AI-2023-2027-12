@@ -38,7 +38,7 @@ class SoilReadingModel extends SoilReading {
   /// - `humidity` | `ambient_humidity`
   factory SoilReadingModel.fromJson(Map<String, dynamic> json) {
     return SoilReadingModel(
-      ph: SoilValidator.parseNumeric(json['ph']),
+      ph: SoilValidator.parseNumeric(json['ph'] ?? json['pH']),
       moisture: SoilValidator.parseNumeric(json['moisture'] ?? json['soil_moisture']),
       nitrogen: SoilValidator.parseNumeric(json['nitrogen'] ?? json['n'] ?? json['N']),
       phosphorus: SoilValidator.parseNumeric(json['phosphorus'] ?? json['p'] ?? json['P']),
