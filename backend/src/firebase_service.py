@@ -7,7 +7,6 @@ firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 
-
 def save_soil_reading(farmer_id, device_id, soil_data):
     reading = {
         "farmer_id": farmer_id,
@@ -54,11 +53,13 @@ def get_latest_soil_reading():
 def get_farmer_soil_readings(farmer_id):
     docs = (
         db.collection("soil_readings")
-        .where("farmer_id", "==", farmer_id)
+        .where(
+            filter=firestore.FieldFilter(
+                "farmer_id", "==", farmer_id)
+                )
         .order_by("timestamp", direction=firestore.Query.DESCENDING)
         .stream()
     )
-
     readings = []
 
     for doc in docs:
