@@ -80,7 +80,107 @@ class SoilTelemetryRepository {
     return _cachedHistory.where((r) => r.farmerId == farmerId).toList();
   }
 
+  /// Fetches historical time-series readings from Chetan's cloud collection for an authenticated farmer.
+  Future<List<CloudSoilRecordModel>> fetchHistoricalTimeSeries(
+    String farmerId, {
+    int limit = 10,
+  }) async {
+    try {
+      final recordsJson = await apiClient.fetchFarmerHistoricalReadingsFromCloud(
+        farmerId: farmerId,
+        limit: limit,
+      );
+      final fetched = recordsJson
+          .map((j) => CloudSoilRecordModel.fromFirestore(j, j['id'] as String))
+          .toList();
+      for (final r in fetched) {
+        if (!_cachedHistory.any((c) => c.id == r.id)) {
+          _cachedHistory.add(r);
+        }
+      }
+      return getFarmerHistory(farmerId);
+    } catch (_) {
+      return getFarmerHistory(farmerId);
+    }
+  }
+
+  /// Calculates statistical averages across the farmer's historical telemetry records.
+  /// Eliminates sensor spikes and noisy single-sample variations before crop recommendation.
+  Map<String, double> computeAggregatedSoilProfile(String farmerId) {
+    final history = getFarmerHistory(farmerId);
+    if (history.isEmpty) {
+      final fallback = _lastKnownRecord?.reading ??
+          const SoilReadingModel(
+            ph: 6.8,
+            moisture: 50.0,
+            nitrogen: 80.0,
+            phosphorus: 40.0,
+            potassium: 150.0,
+            temperature: 25.0,
+            humidity: 60.0,
+          );
+      return {
+        'pH': fallback.ph ?? 6.8,
+        'moisture': fallback.moisture ?? 50.0,
+        'N': fallback.nitrogen ?? 80.0,
+        'P': fallback.phosphorus ?? 40.0,
+        'K': fallback.potassium ?? 150.0,
+        'temperature': fallback.temperature ?? 25.0,
+        'humidity': fallback.humidity ?? 60.0,
+      };
+    }
+
+    double totalPh = 0;
+    double totalMoisture = 0;
+    double totalN = 0;
+    double totalP = 0;
+    double totalK = 0;
+    double totalTemp = 0;
+    double totalHumidity = 0;
+
+    for (final record in history) {
+      totalPh += record.reading.ph ?? 6.8;
+      totalMoisture += record.reading.moisture ?? 50.0;
+      totalN += record.reading.nitrogen ?? 80.0;
+      totalP += record.reading.phosphorus ?? 40.0;
+      totalK += record.reading.potassium ?? 150.0;
+      totalTemp += record.reading.temperature ?? 25.0;
+      totalHumidity += record.reading.humidity ?? 60.0;
+    }
+
+    final count = history.length.toDouble();
+    return {
+      'pH': double.parse((totalPh / count).toStringAsFixed(2)),
+      'moisture': double.parse((totalMoisture / count).toStringAsFixed(2)),
+      'N': double.parse((totalN / count).toStringAsFixed(2)),
+      'P': double.parse((totalP / count).toStringAsFixed(2)),
+      'K': double.parse((totalK / count).toStringAsFixed(2)),
+      'temperature': double.parse((totalTemp / count).toStringAsFixed(2)),
+      'humidity': double.parse((totalHumidity / count).toStringAsFixed(2)),
+    };
+  }
+
+  /// Identifies critical nutrient deficiencies based on historical aggregated soil telemetry.
+  List<String> getSoilHealthDeficiencies(String farmerId) {
+    final profile = computeAggregatedSoilProfile(farmerId);
+    final deficiencies = <String>[];
+
+    final n = profile['N'] ?? 80.0;
+    final p = profile['P'] ?? 40.0;
+    final k = profile['K'] ?? 150.0;
+    final ph = profile['pH'] ?? 6.8;
+
+    if (n < 50.0) deficiencies.add('Critical Nitrogen Deficiency (< 50 kg/ha)');
+    if (p < 25.0) deficiencies.add('Low Phosphorus Reserve (< 25 kg/ha)');
+    if (k < 100.0) deficiencies.add('Potassium Deficiency (< 100 kg/ha)');
+    if (ph < 5.8) deficiencies.add('Acidic Soil Condition (pH < 5.8)');
+    if (ph > 7.8) deficiencies.add('Alkaline Soil Condition (pH > 7.8)');
+
+    return deficiencies;
+  }
+
   void dispose() {
     _telemetryStreamController.close();
   }
 }
+
