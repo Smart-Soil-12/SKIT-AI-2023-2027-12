@@ -14,3 +14,7 @@ for crop, code in zip(encoder.classes_, encoder.transform(encoder.classes_)):
 
 print("\nEncoded dataset preview:")
 print(df[["label", "label_encoded"]].head())
+
+df.to_csv("data/Crop_recommendation_encoded.csv", index=False)
+
+print("\nEncoded dataset saved successfully.")
