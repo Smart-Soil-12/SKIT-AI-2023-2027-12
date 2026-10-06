@@ -1,1 +1,0 @@
-"""Smart Soil test suite."""
