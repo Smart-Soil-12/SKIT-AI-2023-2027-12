@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Soil — Android App Preview</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js">
+    function recalculateCrops() {
+      const container = document.getElementById('crop-list-container');
+      container.innerHTML = `
+        <div class="p-3 bg-emerald-50/80 rounded-xl border border-emerald-300 animate-pulse">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-emerald-600 text-white text-[11px] font-bold flex items-center justify-center">#1</span>
+              <div>
+                <span class="font-bold text-xs text-slate-900">Cotton (कपास)</span>
+                <span class="text-[10px] text-slate-500 ml-1.5 font-medium">Kharif • High Confidence</span>
+              </div>
+            </div>
+            <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-600 text-white">96% Match</span>
+          </div>
+          <div class="w-full bg-slate-200 h-1.5 rounded-full mt-2 overflow-hidden">
+            <div class="bg-emerald-600 h-full rounded-full" style="width: 96%"></div>
+          </div>
+          <p class="text-[11px] text-slate-600 mt-1.5">Simulated adjustment: Elevated potassium & high moisture suitability favors deep-root fibrous crops.</p>
+        </div>
+        <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-slate-300 text-slate-700 text-[10px] font-bold flex items-center justify-center">#2</span>
+              <span class="font-bold text-xs text-slate-800">Wheat (गेहूँ)</span>
+              <span class="text-[10px] text-slate-500">Rabi</span>
+            </div>
+            <span class="text-xs font-bold text-slate-700">91% Match</span>
+          </div>
+          <div class="w-full bg-slate-200 h-1 rounded-full mt-1.5 overflow-hidden">
+            <div class="bg-emerald-500 h-full rounded-full" style="width: 91%"></div>
+          </div>
+        </div>
+        <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-slate-300 text-slate-700 text-[10px] font-bold flex items-center justify-center">#3</span>
+              <span class="font-bold text-xs text-slate-800">Rice (चावल)</span>
+              <span class="text-[10px] text-slate-500">Kharif</span>
+            </div>
+            <span class="text-xs font-bold text-slate-700">88% Match</span>
+          </div>
+          <div class="w-full bg-slate-200 h-1 rounded-full mt-1.5 overflow-hidden">
+            <div class="bg-emerald-500 h-full rounded-full" style="width: 88%"></div>
+          </div>
+        </div>
+      `;
+    }
+
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    .gauge-circle {
+      transition: stroke-dashoffset 0.6s ease-in-out, stroke 0.4s ease;
+    }
+    .scan-line {
+      animation: scanAnim 2s ease-in-out infinite alternate;
+    }
+    @keyframes scanAnim {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(130px); }
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen p-3 sm:p-6 flex flex-col items-center justify-center">
+
+  <!-- Header Banner -->
+  <div class="max-w-[420px] w-full mb-3 flex items-center justify-between px-2">
+    <div>
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">SKIT • Group AI-12</span>
+        <span class="text-xs text-slate-400 font-mono">B.Tech Final Year</span>
+      </div>
+      <h1 class="text-base font-extrabold text-white mt-1">Smart Soil</h1>
+      <p class="text-xs text-slate-400">Chaitanya Sharma (Member 2 — Flutter App)</p>
+    </div>
+    <div class="text-right">
+      <span class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full border border-slate-700">SDG-2 Zero Hunger</span>
+    </div>
+  </div>
+
+  <!-- Android Phone Mockup Frame -->
+  <div class="w-full max-w-[400px] bg-[#F7FAF7] text-slate-900 rounded-[40px] shadow-2xl border-[9px] border-slate-800 overflow-hidden relative flex flex-col min-h-[760px] max-h-[820px]">
+    
+    <!-- Android Status Bar -->
+    <div class="bg-[#0B6638] text-white px-6 pt-3 pb-1 flex items-center justify-between text-xs font-medium">
+      <span class="font-bold">12:00</span>
+      <div class="flex items-center gap-2">
+        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L12 22l7.03-4.39C20.26 16.07 21 14.12 21 12c0-4.97-4.03-9-9-9z"/></svg>
+        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+        <div class="w-4 h-2 rounded-sm border border-white/90 flex items-center p-0.5">
+          <div class="h-full w-full bg-white rounded-2xs"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Smart Soil Top Bar with Bilingual Language Switcher -->
+    <div class="bg-white border-b border-slate-200/80 px-4 py-3 flex items-center justify-between shrink-0 shadow-xs">
+      <div>
+        <h2 id="top-greeting" class="text-sm font-bold text-slate-900 leading-tight">Hello, Chaitanya Sharma</h2>
+        <p id="top-subtitle" class="text-[11px] text-slate-500">Welcome to Smart Soil</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <!-- Language Selector Dropdown -->
+        <select id="lang-select" onchange="toggleLanguage(this.value)" class="text-xs font-bold bg-[#F0F6F1] text-[#0B6638] border border-emerald-200 rounded-lg px-2 py-1 outline-none cursor-pointer">
+          <option value="en">🌐 English</option>
+          <option value="hi">🌐 हिन्दी</option>
+        </select>
+        <!-- Profile Avatar -->
+        <div class="w-8 h-8 rounded-full bg-[#0B6638] text-white flex items-center justify-center font-bold text-xs shadow-sm">
+          C
+        </div>
+      </div>
+    </div>
+
+    <!-- Scrollable Screen Content Container -->
+    <div id="screen-container" class="flex-1 overflow-y-auto pb-6">
+      
+      <!-- ================= TAB 1: HOME SCREEN ================= -->
+      <div id="tab-home-content" class="p-4 space-y-4">
+        
+        <!-- Hero "Scan Your Crop" Card -->
+        <div class="rounded-2xl p-5 text-white bg-gradient-to-br from-[#0B6638] to-[#064324] shadow-lg relative overflow-hidden">
+          <svg class="absolute -right-3 -bottom-3 w-28 h-28 text-white/10 fill-current" viewBox="0 0 24 24"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/></svg>
+          <h3 id="hero-title" class="text-lg font-bold">Scan Your Crop</h3>
+          <p id="hero-sub" class="text-xs text-white/90 mt-1 max-w-[220px]">Detect diseases and get instant solutions</p>
+          <button onclick="switchTab(1)" class="mt-4 inline-flex items-center gap-2 bg-white text-[#0B6638] font-bold text-xs px-4 py-2 rounded-xl shadow-md hover:bg-emerald-50 transition active:scale-95">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="4" stroke-width="2"/></svg>
+            <span id="hero-btn">Open Camera</span>
+          </button>
+        </div>
+
+        <!-- Weather & Agri Risk Card -->
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80">
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-sky-50 flex items-center justify-center text-sky-600">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z"/></svg>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="text-xl font-extrabold text-slate-900">23.4°C</span>
+                  <span id="risk-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-rose-100 text-rose-700">High Risk</span>
+                </div>
+                <p class="text-[11px] text-slate-500">Light rain shower • Jaipur, Rajasthan</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3 Stats Columns -->
+          <div class="mt-3 grid grid-cols-3 gap-2 bg-[#F7FAF7] rounded-xl p-2.5 text-center border border-slate-100">
+            <div>
+              <p id="stat-feels-label" class="text-[10px] text-slate-500 font-medium">Feels like</p>
+              <p class="text-xs font-bold text-slate-900 mt-0.5">25.8°C</p>
+            </div>
+            <div class="border-x border-slate-200">
+              <p id="stat-humidity-label" class="text-[10px] text-slate-500 font-medium">Humidity</p>
+              <p class="text-xs font-bold text-slate-900 mt-0.5">91%</p>
+            </div>
+            <div>
+              <p id="stat-rain-label" class="text-[10px] text-slate-500 font-medium">Rainfall</p>
+              <p class="text-xs font-bold text-slate-900 mt-0.5">0.52 mm</p>
+            </div>
+          </div>
+
+          <!-- Bilingual "कृषि जोखिम" Alert Banner -->
+          <div class="mt-3 bg-amber-50 border border-amber-200 rounded-xl p-3">
+            <div class="flex items-center gap-1.5 text-amber-900 font-bold text-xs">
+              <svg class="w-4 h-4 text-amber-600 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+              <span id="risk-banner-title">Agri Risk • High Risk</span>
+            </div>
+            <p id="risk-banner-text" class="text-[11px] text-amber-900/90 mt-1 leading-relaxed">
+              Advisory: High humidity & favorable temperatures create elevated risk of fungal blight. Avoid foliage wetting.
+            </p>
+          </div>
+
+          <div class="mt-2.5 flex items-center gap-1.5 text-[10px] text-slate-400">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            <span id="wind-text">Wind: 11.9 km/h • Ambient Soil Monitoring</span>
+          </div>
+        </div>
+
+        
+        <!-- Top-3 Crop Recommendations Card (Sprint 4 & 5 Deliverable) -->
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 text-sm font-bold">
+                🌱
+              </div>
+              <div>
+                <h4 id="crop-rec-title" class="text-sm font-bold text-slate-900">Top Crop Recommendations</h4>
+                <p id="crop-rec-sub" class="text-[10px] text-slate-500">AI-Driven Field Suitability</p>
+              </div>
+            </div>
+            <button onclick="recalculateCrops()" class="text-xs font-semibold px-2.5 py-1 bg-emerald-50 text-emerald-800 rounded-lg border border-emerald-200 hover:bg-emerald-100 transition active:scale-95">
+              🔄 Recalculate
+            </button>
+          </div>
+
+          <!-- Top-3 Crop List -->
+          <div class="space-y-2.5" id="crop-list-container">
+            <!-- Rank 1: Wheat -->
+            <div class="p-3 bg-emerald-50/60 rounded-xl border border-emerald-200">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-6 h-6 rounded-full bg-emerald-600 text-white text-[11px] font-bold flex items-center justify-center">#1</span>
+                  <div>
+                    <span class="font-bold text-xs text-slate-900">Wheat (गेहूँ)</span>
+                    <span class="text-[10px] text-slate-500 ml-1.5 font-medium">Rabi • High Confidence</span>
+                  </div>
+                </div>
+                <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-600 text-white">94% Match</span>
+              </div>
+              <div class="w-full bg-slate-200 h-1.5 rounded-full mt-2 overflow-hidden">
+                <div class="bg-emerald-600 h-full rounded-full" style="width: 94%"></div>
+              </div>
+              <p class="text-[11px] text-slate-600 mt-1.5">Optimal soil pH (6.8) and balanced NPK ratio support vigorous tillering and high yield.</p>
+            </div>
+
+            <!-- Rank 2: Maize -->
+            <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-5 h-5 rounded-full bg-slate-300 text-slate-700 text-[10px] font-bold flex items-center justify-center">#2</span>
+                  <span class="font-bold text-xs text-slate-800">Maize (मक्का)</span>
+                  <span class="text-[10px] text-slate-500">Kharif</span>
+                </div>
+                <span class="text-xs font-bold text-slate-700">86% Match</span>
+              </div>
+              <div class="w-full bg-slate-200 h-1 rounded-full mt-1.5 overflow-hidden">
+                <div class="bg-emerald-500 h-full rounded-full" style="width: 86%"></div>
+              </div>
+            </div>
+
+            <!-- Rank 3: Chickpea -->
+            <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-5 h-5 rounded-full bg-slate-300 text-slate-700 text-[10px] font-bold flex items-center justify-center">#3</span>
+                  <span class="font-bold text-xs text-slate-800">Chickpea (चना)</span>
+                  <span class="text-[10px] text-slate-500">Rabi</span>
+                </div>
+                <span class="text-xs font-bold text-slate-700">78% Match</span>
+              </div>
+              <div class="w-full bg-slate-200 h-1 rounded-full mt-1.5 overflow-hidden">
+                <div class="bg-emerald-500 h-full rounded-full" style="width: 78%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-3 flex items-center justify-between text-[10px] text-slate-400 border-t border-slate-100 pt-2">
+            <span>Soil Baseline: N:85 P:42 K:180 | pH:6.8</span>
+            <span class="text-emerald-700 font-semibold">Target: High Harvest Yield</span>
+          </div>
+        </div>
+
+        <!-- Soil Telemetry Summary & Circular Health Gauge -->
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80">
+          <div class="flex items-center justify-between mb-3">
+            <h4 id="health-index-title" class="text-sm font-bold text-slate-900">Soil Health Index</h4>
+            <button onclick="switchTab(4)" class="text-xs font-bold text-[#0B6638] hover:underline flex items-center gap-1">
+              <span id="see-details-btn">Soil & Farm</span>
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+
+          <div class="flex items-center gap-4 bg-[#F7FAF7] p-3 rounded-xl border border-slate-100">
+            <div class="relative w-16 h-16 shrink-0 flex items-center justify-center">
+              <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                <path class="text-slate-200" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                <path id="gauge-path" class="text-emerald-600 gauge-circle" stroke-dasharray="94, 100" stroke-linecap="round" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              </svg>
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <span id="gauge-val" class="text-sm font-extrabold text-slate-900">94</span>
+                <span class="text-[8px] text-slate-400">/ 100</span>
+              </div>
+            </div>
+            <div>
+              <span id="gauge-cat" class="text-xs font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800">Optimal Health</span>
+              <p class="text-[11px] text-slate-500 mt-1">Multi-sensor weighted evaluation across pH, Moisture & NPK.</p>
+            </div>
+          </div>
+
+          <!-- 3 Mini Sensors -->
+          <div class="grid grid-cols-3 gap-2 mt-3">
+            <div class="bg-[#F7FAF7] rounded-xl p-2 border border-slate-100">
+              <p class="text-[10px] text-slate-500 font-semibold">Moisture</p>
+              <p class="text-xs font-bold text-sky-700 mt-0.5">62.0 %</p>
+            </div>
+            <div class="bg-[#F7FAF7] rounded-xl p-2 border border-slate-100">
+              <p class="text-[10px] text-slate-500 font-semibold">Soil pH</p>
+              <p class="text-xs font-bold text-purple-700 mt-0.5">6.80 pH</p>
+            </div>
+            <div class="bg-[#F7FAF7] rounded-xl p-2 border border-slate-100">
+              <p class="text-[10px] text-slate-500 font-semibold">Nitrogen</p>
+              <p class="text-xs font-bold text-emerald-700 mt-0.5">85 mg/kg</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Farmers News Feed -->
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80">
+          <h4 id="news-title" class="text-sm font-bold text-slate-900 mb-2">Farmers News</h4>
+          <div class="space-y-2.5">
+            <div class="flex items-start gap-2.5 p-2 rounded-xl bg-[#F7FAF7] border border-slate-100">
+              <div class="w-8 h-8 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center shrink-0">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2c-5.33 4.55-8 8.48-8 11.8 0 4.98 3.8 8.2 8 8.2s8-3.22 8-8.2c0-3.32-2.67-7.25-8-11.8z"/></svg>
+              </div>
+              <div class="flex-1">
+                <p id="news-1-head" class="text-xs font-bold text-slate-900 leading-snug">Kharif Water Management: Can Farmers Save More Water?</p>
+                <p id="news-1-time" class="text-[10px] text-slate-400 mt-0.5">2 days ago • Water Conservation</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-2.5 p-2 rounded-xl bg-[#F7FAF7] border border-slate-100">
+              <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+              </div>
+              <div class="flex-1">
+                <p id="news-2-head" class="text-xs font-bold text-slate-900 leading-snug">Laser Weeding Machines: The Future of Weed Control</p>
+                <p id="news-2-time" class="text-[10px] text-slate-400 mt-0.5">4 days ago • Tech Insights</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ================= TAB 2: SCAN SCREEN ================= -->
+      <div id="tab-scan-content" class="p-4 space-y-4 hidden">
+        <div class="bg-slate-900 text-white rounded-2xl p-4 shadow-lg relative flex flex-col items-center justify-center min-h-[200px]">
+          <div class="w-40 h-32 rounded-2xl border-2 border-emerald-400/80 relative flex items-center justify-center overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1 bg-emerald-400 scan-line"></div>
+            <svg class="w-10 h-10 text-emerald-400/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
+          </div>
+          <p id="scan-inst" class="text-xs text-slate-300 mt-3">Align diseased crop leaf inside viewfinder</p>
+        </div>
+
+        <!-- Sample Leaf Test Selector for Viva Demo -->
+        <div>
+          <p id="sample-title" class="text-xs font-bold text-slate-700 mb-1.5">Or test with sample leaf:</p>
+          <div class="grid grid-cols-2 gap-1.5">
+            <button onclick="setSample('early')" id="btn-early" class="text-left text-xs p-2 rounded-xl font-bold bg-[#0B6638] text-white shadow-xs">🌱 Tomato Early Blight</button>
+            <button onclick="setSample('healthy')" id="btn-healthy" class="text-left text-xs p-2 rounded-xl font-bold bg-white text-slate-700 border border-slate-200">🌾 Healthy Wheat</button>
+            <button onclick="setSample('late')" id="btn-late" class="text-left text-xs p-2 rounded-xl font-bold bg-white text-slate-700 border border-slate-200">🥔 Potato Late Blight</button>
+            <button onclick="setSample('curl')" id="btn-curl" class="text-left text-xs p-2 rounded-xl font-bold bg-white text-slate-700 border border-slate-200">🌿 Cotton Leaf Curl</button>
+          </div>
+        </div>
+
+        <!-- AI Diagnosis Card -->
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80">
+          <div class="flex items-center justify-between">
+            <span id="diag-title" class="text-xs font-bold text-slate-500 uppercase">AI Diagnosis Result</span>
+            <span id="diag-sev" class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-rose-100 text-rose-700">High Severity</span>
+          </div>
+          <h3 id="diag-name" class="text-base font-extrabold text-slate-900 mt-1">Tomato Early Blight (Alternaria solani)</h3>
+          
+          <div class="mt-2 flex items-center gap-2">
+            <span id="diag-conf-text" class="text-xs font-bold text-emerald-700">AI Confidence: 96.4%</span>
+            <div class="flex-1 bg-slate-100 h-2 rounded-full overflow-hidden">
+              <div id="diag-bar" class="bg-emerald-600 h-full rounded-full w-[96%]"></div>
+            </div>
+          </div>
+
+          <div class="mt-3 pt-3 border-t border-slate-100">
+            <p id="symptom-head" class="text-xs font-bold text-slate-900">Symptoms</p>
+            <p id="symptom-text" class="text-xs text-slate-600 mt-0.5 leading-relaxed">Concentric brown-black rings on lower leaves with yellow halo.</p>
+          </div>
+
+          <div class="mt-3 bg-emerald-50/80 border border-emerald-200 rounded-xl p-3">
+            <p id="treat-head" class="text-xs font-bold text-emerald-900 flex items-center gap-1">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+              Recommended Treatment
+            </p>
+            <p id="treat-text" class="text-xs text-emerald-950 mt-1 leading-relaxed">
+              Apply Mancozeb 75% WP @ 2.5g/L or copper oxychloride. Ensure drip irrigation to avoid leaf wetness.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 3: YIELD SCREEN ================= -->
+      <div id="tab-yield-content" class="p-4 space-y-4 hidden">
+        <div>
+          <h3 id="yield-header" class="text-base font-extrabold text-slate-900">AI Crop Yield Prediction</h3>
+          <p id="yield-sub" class="text-xs text-slate-500">Prediction powered by multi-sensor NPK and soil telemetry</p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 space-y-3">
+          <div>
+            <label id="crop-select-label" class="text-xs font-bold text-slate-700">Select Target Crop</label>
+            <select id="crop-select" onchange="recalculateYield()" class="w-full mt-1 bg-[#F7FAF7] border border-slate-200 rounded-xl p-2.5 text-xs font-bold text-slate-800">
+              <option value="wheat">Wheat (गेहूं)</option>
+              <option value="rice">Rice / Paddy (धान)</option>
+              <option value="cotton">Cotton (कपास)</option>
+              <option value="maize">Maize (मक्का)</option>
+              <option value="mustard">Mustard (सरसों)</option>
+            </select>
+          </div>
+          <div>
+            <div class="flex justify-between items-center text-xs font-bold">
+              <span id="farm-size-label" class="text-slate-700">Farm Size</span>
+              <span id="farm-size-val" class="text-[#0B6638]">5.0 Acres</span>
+            </div>
+            <input type="range" id="acres-slider" min="1" max="25" value="5" oninput="updateAcres(this.value)" class="w-full mt-2 accent-[#0B6638]">
+          </div>
+        </div>
+
+        <!-- Predicted Yield Result Card -->
+        <div class="bg-gradient-to-br from-[#0B6638] to-[#2E7D32] text-white rounded-2xl p-5 shadow-lg">
+          <p id="pred-yield-label" class="text-xs text-white/80 font-medium">Estimated Yield Potential</p>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span id="yield-num" class="text-3xl font-extrabold text-white">22.4</span>
+            <span id="yield-unit" class="text-xs text-white/90">Quintals / Acre</span>
+          </div>
+          <div class="mt-4 pt-3 border-t border-white/20 flex justify-between items-center text-xs">
+            <span id="total-harvest-label" class="text-white/80">Total Harvest Estimate:</span>
+            <span id="total-harvest-val" class="font-bold text-white text-sm">112.0 Q</span>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80">
+          <p id="opt-tip-head" class="text-xs font-bold text-amber-800 flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/></svg>
+            Optimization Advisory
+          </p>
+          <p id="opt-tip-body" class="text-xs text-slate-600 mt-1 leading-relaxed">
+            Current Nitrogen (85 mg/kg) is balanced. Maintaining adequate top-dressing at 45 days after sowing will push yield up by +1.5 Q/Acre.
+          </p>
+        </div>
+      </div>
+
+      <!-- ================= TAB 4: AI CHAT SCREEN ================= -->
+      <div id="tab-ai-content" class="p-3 flex flex-col h-full hidden">
+        <!-- Quick Prompt Chips -->
+        <div class="flex gap-1.5 overflow-x-auto pb-2 shrink-0">
+          <button onclick="sendQuickPrompt('Treat fungal blight?')" class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-[#0B6638] border border-emerald-200 whitespace-nowrap">Treat fungal blight?</button>
+          <button onclick="sendQuickPrompt('Best fertilizer for current soil pH?')" class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-[#0B6638] border border-emerald-200 whitespace-nowrap">Fertilizer for soil pH?</button>
+          <button onclick="sendQuickPrompt('Is moisture optimal for sowing?')" class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-[#0B6638] border border-emerald-200 whitespace-nowrap">Moisture for sowing?</button>
+        </div>
+
+        <div id="chat-stream" class="flex-1 space-y-3 overflow-y-auto p-2 bg-[#F7FAF7] rounded-xl border border-slate-100 min-h-[360px]">
+          <!-- AI Welcome Bubble -->
+          <div class="flex items-start gap-2 max-w-[85%]">
+            <div class="w-6 h-6 rounded-full bg-[#0B6638] text-white flex items-center justify-center text-xs shrink-0 font-bold">AI</div>
+            <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-xs text-xs text-slate-800 leading-relaxed border border-slate-100">
+              Hello! I am your Smart Soil AI Assistant. Ask me anything about crop diseases, soil health, or fertilizer schedules.
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Input -->
+        <div class="mt-3 flex gap-2">
+          <input type="text" id="chat-input" placeholder="Ask in English or हिन्दी..." class="flex-1 text-xs bg-white border border-slate-200 rounded-xl px-3 py-2 outline-none focus:border-[#0B6638]">
+          <button onclick="sendUserMessage()" class="w-9 h-9 rounded-xl bg-[#0B6638] text-white flex items-center justify-center shadow hover:bg-emerald-700">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= TAB 5: SOIL & FARM SCREEN ================= -->
+      <div id="tab-farm-content" class="p-4 space-y-3 hidden">
+        
+        <!-- Hardware Node Status with Viva Scenario Switcher -->
+        <div class="bg-white p-3.5 rounded-2xl shadow-sm border border-slate-200/80 flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></div>
+            <div>
+              <p class="text-xs font-bold text-slate-900">ESP32_AI12_NODE_01</p>
+              <p class="text-[10px] text-slate-500">Connected • Telemetry Live</p>
+            </div>
+          </div>
+          <!-- Scenario selector -->
+          <select onchange="switchScenario(this.value)" class="text-[11px] font-bold bg-emerald-50 text-[#0B6638] border border-emerald-200 rounded-lg px-2 py-1 outline-none">
+            <option value="optimal">🌱 Optimal Soil</option>
+            <option value="drought">🔥 Drought Alert</option>
+            <option value="waterlogged">💧 Waterlogged</option>
+          </select>
+        </div>
+
+        <!-- 6 Telemetry Cards -->
+        <div class="grid grid-cols-2 gap-2.5">
+          <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200/80">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-semibold text-slate-500">Moisture</span>
+              <span id="stat-moist-badge" class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">Optimal</span>
+            </div>
+            <p id="stat-moist-val" class="text-lg font-bold text-sky-700 mt-1">62.0 %</p>
+          </div>
+
+          <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200/80">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-semibold text-slate-500">Soil pH</span>
+              <span id="stat-ph-badge" class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">Optimal</span>
+            </div>
+            <p id="stat-ph-val" class="text-lg font-bold text-purple-700 mt-1">6.80 pH</p>
+          </div>
+
+          <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200/80">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-semibold text-slate-500">Nitrogen (N)</span>
+              <span id="stat-n-badge" class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">Optimal</span>
+            </div>
+            <p id="stat-n-val" class="text-lg font-bold text-emerald-700 mt-1">85 mg/kg</p>
+          </div>
+
+          <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200/80">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-semibold text-slate-500">Phosphorus (P)</span>
+              <span id="stat-p-badge" class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">Optimal</span>
+            </div>
+            <p id="stat-p-val" class="text-lg font-bold text-amber-700 mt-1">38 mg/kg</p>
+          </div>
+
+          <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200/80">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-semibold text-slate-500">Potassium (K)</span>
+              <span id="stat-k-badge" class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">Optimal</span>
+            </div>
+            <p id="stat-k-val" class="text-lg font-bold text-emerald-700 mt-1">180 mg/kg</p>
+          </div>
+
+          <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200/80">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-semibold text-slate-500">Climate</span>
+              <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">Optimal</span>
+            </div>
+            <p class="text-lg font-bold text-orange-700 mt-1">26.5°C</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- 5-Tab Material 3 Navigation Bar -->
+    <div class="bg-white border-t border-slate-200 px-2 py-1.5 flex items-center justify-around shrink-0 shadow-lg">
+      <button onclick="switchTab(0)" id="nav-btn-0" class="flex flex-col items-center gap-0.5 text-[#0B6638] font-bold transition">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        <span id="nav-label-0" class="text-[10px]">Home</span>
+      </button>
+      <button onclick="switchTab(1)" id="nav-btn-1" class="flex flex-col items-center gap-0.5 text-slate-400 font-medium hover:text-[#0B6638] transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="4" stroke-width="2"/></svg>
+        <span id="nav-label-1" class="text-[10px]">Scan</span>
+      </button>
+      <button onclick="switchTab(2)" id="nav-btn-2" class="flex flex-col items-center gap-0.5 text-slate-400 font-medium hover:text-[#0B6638] transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        <span id="nav-label-2" class="text-[10px]">Yield</span>
+      </button>
+      <button onclick="switchTab(3)" id="nav-btn-3" class="flex flex-col items-center gap-0.5 text-slate-400 font-medium hover:text-[#0B6638] transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        <span id="nav-label-3" class="text-[10px]">Ask AI</span>
+      </button>
+      <button onclick="switchTab(4)" id="nav-btn-4" class="flex flex-col items-center gap-0.5 text-slate-400 font-medium hover:text-[#0B6638] transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        <span id="nav-label-4" class="text-[10px]">Soil & Farm</span>
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    let currentTab = 0;
+    let currentLocale = 'en';
+    let currentSample = 'early';
+
+    const translations = {
+      en: {
+        greeting: 'Hello, Chaitanya Sharma',
+        welcome: 'Welcome to Smart Soil',
+        heroTitle: 'Scan Your Crop',
+        heroSub: 'Detect diseases and get instant solutions',
+        heroBtn: 'Open Camera',
+        feelsLike: 'Feels like',
+        humidity: 'Humidity',
+        rainfall: 'Rainfall',
+        riskBannerTitle: 'Agri Risk • High Risk',
+        riskBannerText: 'Advisory: High humidity & favorable temperatures create elevated risk of fungal blight. Avoid foliage wetting.',
+        windText: 'Wind: 11.9 km/h • Ambient Soil Monitoring',
+        healthIndex: 'Soil Health Index',
+        seeDetails: 'Soil & Farm',
+        farmersNews: 'Farmers News',
+        news1Head: 'Kharif Water Management: Can Farmers Save More Water?',
+        news1Time: '2 days ago • Water Conservation',
+        news2Head: 'Laser Weeding Machines: The Future of Weed Control',
+        news2Time: '4 days ago • Tech Insights',
+        nav0: 'Home',
+        nav1: 'Scan',
+        nav2: 'Yield',
+        nav3: 'Ask AI',
+        nav4: 'Soil & Farm'
+      },
+      hi: {
+        greeting: 'नमस्ते, Chaitanya Sharma',
+        welcome: 'स्मार्ट सॉइल में आपका स्वागत है',
+        heroTitle: 'अपनी फसल स्कैन करें',
+        heroSub: 'रोगों का तुरंत पता लगाएं और सटीक समाधान पाएं',
+        heroBtn: 'कैमरा खोलें',
+        feelsLike: 'महसूस',
+        humidity: 'नमी',
+        rainfall: 'बारिश',
+        riskBannerTitle: 'कृषि जोखिम • उच्च जोखिम',
+        riskBannerText: 'सलाह: उच्च आर्द्रता और अनुकूल तापमान के कारण फफूंद (Fungus/Blight) का खतरा अधिक है। पत्तियों को गीला रखने से बचें।',
+        windText: 'हवा की गति: 11.9 km/h • मृदा एवं जलवायु निगरानी',
+        healthIndex: 'मृदा स्वास्थ्य सूचकांक',
+        seeDetails: 'मिट्टी/खेत',
+        farmersNews: 'किसान समाचार',
+        news1Head: 'खरीफ जल प्रबंधन: क्या किसान अधिक पानी बचा सकते हैं?',
+        news1Time: '2 दिन पहले • जल संरक्षण',
+        news2Head: 'लेजर वीडिंग मशीनें: खरपतवार नियंत्रण का आधुनिक भविष्य',
+        news2Time: '4 दिन पहले • कृषि तकनीक',
+        nav0: 'होम',
+        nav1: 'स्कैन',
+        nav2: 'उपज',
+        nav3: 'एआई',
+        nav4: 'मिट्टी/खेत'
+      }
+    };
+
+    function switchTab(index) {
+      currentTab = index;
+      const tabIds = ['tab-home-content', 'tab-scan-content', 'tab-yield-content', 'tab-ai-content', 'tab-farm-content'];
+      tabIds.forEach((id, i) => {
+        const el = document.getElementById(id);
+        if (el) {
+          if (i === index) el.classList.remove('hidden');
+          else el.classList.add('hidden');
+        }
+        const btn = document.getElementById('nav-btn-' + i);
+        if (btn) {
+          if (i === index) {
+            btn.className = 'flex flex-col items-center gap-0.5 text-[#0B6638] font-bold transition';
+          } else {
+            btn.className = 'flex flex-col items-center gap-0.5 text-slate-400 font-medium hover:text-[#0B6638] transition';
+          }
+        }
+      });
+    }
+
+    function toggleLanguage(lang) {
+      currentLocale = lang;
+      const t = translations[lang];
+      document.getElementById('top-greeting').innerText = t.greeting;
+      document.getElementById('top-subtitle').innerText = t.welcome;
+      document.getElementById('hero-title').innerText = t.heroTitle;
+      document.getElementById('hero-sub').innerText = t.heroSub;
+      document.getElementById('hero-btn').innerText = t.heroBtn;
+      document.getElementById('stat-feels-label').innerText = t.feelsLike;
+      document.getElementById('stat-humidity-label').innerText = t.humidity;
+      document.getElementById('stat-rain-label').innerText = t.rainfall;
+      document.getElementById('risk-banner-title').innerText = t.riskBannerTitle;
+      document.getElementById('risk-banner-text').innerText = t.riskBannerText;
+      document.getElementById('wind-text').innerText = t.windText;
+      document.getElementById('health-index-title').innerText = t.healthIndex;
+      document.getElementById('see-details-btn').innerText = t.seeDetails;
+      document.getElementById('news-title').innerText = t.farmersNews;
+      document.getElementById('news-1-head').innerText = t.news1Head;
+      document.getElementById('news-1-time').innerText = t.news1Time;
+      document.getElementById('news-2-head').innerText = t.news2Head;
+      document.getElementById('news-2-time').innerText = t.news2Time;
+      for (let i = 0; i < 5; i++) {
+        document.getElementById('nav-label-' + i).innerText = t['nav' + i];
+      }
+    }
+
+    const sampleData = {
+      early: {
+        name: 'Tomato Early Blight (Alternaria solani)',
+        sev: 'High Severity',
+        sevColor: 'bg-rose-100 text-rose-700',
+        conf: 96.4,
+        symptoms: 'Concentric brown-black rings on lower leaves with yellow halo.',
+        treat: 'Apply Mancozeb 75% WP @ 2.5g/L or copper oxychloride. Ensure drip irrigation.'
+      },
+      healthy: {
+        name: 'Healthy Wheat Leaf',
+        sev: 'Optimal (No Disease)',
+        sevColor: 'bg-emerald-100 text-emerald-800',
+        conf: 98.8,
+        symptoms: 'Vibrant green coloration, uniform venation, no pathogenic lesions.',
+        treat: 'Maintain balanced NPK fertilization and periodic soil moisture monitoring.'
+      },
+      late: {
+        name: 'Potato Late Blight (Phytophthora)',
+        sev: 'Critical Severity',
+        sevColor: 'bg-pink-100 text-pink-700',
+        conf: 94.1,
+        symptoms: 'Water-soaked dark lesions near leaf margins with white mildew.',
+        treat: 'Foliar spray of Metalaxyl-Mancozeb @ 2.0g/L immediately. Improve field drainage.'
+      },
+      curl: {
+        name: 'Cotton Leaf Curl Virus (CLCuV)',
+        sev: 'Moderate Severity',
+        sevColor: 'bg-amber-100 text-amber-700',
+        conf: 91.7,
+        symptoms: 'Upward leaf curling, thickening of veins, and enations.',
+        treat: 'Control whitefly vectors using Diafenthiuron 50% WP @ 1g/L. Remove weed hosts.'
+      }
+    };
+
+    function setSample(key) {
+      currentSample = key;
+      const data = sampleData[key];
+      ['early', 'healthy', 'late', 'curl'].forEach(k => {
+        const btn = document.getElementById('btn-' + k);
+        if (k === key) {
+          btn.className = 'text-left text-xs p-2 rounded-xl font-bold bg-[#0B6638] text-white shadow-xs';
+        } else {
+          btn.className = 'text-left text-xs p-2 rounded-xl font-bold bg-white text-slate-700 border border-slate-200';
+        }
+      });
+      document.getElementById('diag-name').innerText = data.name;
+      document.getElementById('diag-sev').innerText = data.sev;
+      document.getElementById('diag-sev').className = 'text-[10px] font-bold px-2 py-0.5 rounded-md ' + data.sevColor;
+      document.getElementById('diag-conf-text').innerText = 'AI Confidence: ' + data.conf + '%';
+      document.getElementById('diag-bar').style.width = data.conf + '%';
+      document.getElementById('symptom-text').innerText = data.symptoms;
+      document.getElementById('treat-text').innerText = data.treat;
+    }
+
+    function updateAcres(val) {
+      document.getElementById('farm-size-val').innerText = parseFloat(val).toFixed(1) + ' Acres';
+      recalculateYield();
+    }
+
+    function recalculateYield() {
+      const crop = document.getElementById('crop-select').value;
+      const acres = parseFloat(document.getElementById('acres-slider').value);
+      let baseYield = 22.4;
+      if (crop === 'rice') baseYield = 26.8;
+      if (crop === 'cotton') baseYield = 14.5;
+      if (crop === 'maize') baseYield = 28.2;
+      if (crop === 'mustard') baseYield = 12.0;
+
+      document.getElementById('yield-num').innerText = baseYield.toFixed(1);
+      document.getElementById('total-harvest-val').innerText = (baseYield * acres).toFixed(1) + ' Q';
+    }
+
+    function sendQuickPrompt(txt) {
+      document.getElementById('chat-input').value = txt;
+      sendUserMessage();
+    }
+
+    function sendUserMessage() {
+      const input = document.getElementById('chat-input');
+      const val = input.value.trim();
+      if (!val) return;
+      const stream = document.getElementById('chat-stream');
+
+      // Add user bubble
+      const userBubble = document.createElement('div');
+      userBubble.className = 'flex items-start justify-end gap-2 ml-auto max-w-[85%]';
+      userBubble.innerHTML = `<div class="bg-[#0B6638] text-white p-3 rounded-2xl rounded-tr-none shadow-xs text-xs leading-relaxed">${val}</div>`;
+      stream.appendChild(userBubble);
+      input.value = '';
+
+      // Add AI reply
+      setTimeout(() => {
+        let answer = 'Based on live Smart Soil telemetry, your soil conditions are actively monitored. Maintain adequate irrigation and scheduled fertilization according to your crop calendar.';
+        const lower = val.toLowerCase();
+        if (lower.includes('fungal') || lower.includes('blight')) {
+          answer = 'For fungal blight, apply Mancozeb 75% WP @ 2.5g/L immediately. In case of high humidity, avoid excessive irrigation and improve field aeration to reduce spore proliferation.';
+        } else if (lower.includes('ph') || lower.includes('fertilizer')) {
+          answer = 'For neutral soil pH around 6.5 - 7.0, apply DAP at basal stage followed by Urea in split applications. If soil is acidic (pH < 6.0), apply agricultural lime.';
+        } else if (lower.includes('moisture')) {
+          answer = 'Optimal moisture for most cereal crops is between 50% and 70%. If moisture drops below 35%, schedule an irrigation cycle within 24 hours.';
+        }
+
+        const aiBubble = document.createElement('div');
+        aiBubble.className = 'flex items-start gap-2 max-w-[85%]';
+        aiBubble.innerHTML = `
+          <div class="w-6 h-6 rounded-full bg-[#0B6638] text-white flex items-center justify-center text-xs shrink-0 font-bold">AI</div>
+          <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-xs text-xs text-slate-800 leading-relaxed border border-slate-100">${answer}</div>
+        `;
+        stream.appendChild(aiBubble);
+        stream.scrollTop = stream.scrollHeight;
+      }, 500);
+    }
+
+    function switchScenario(sc) {
+      if (sc === 'optimal') {
+        document.getElementById('gauge-val').innerText = '94';
+        document.getElementById('gauge-cat').innerText = 'Optimal Health';
+        document.getElementById('gauge-cat').className = 'text-xs font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800';
+        document.getElementById('gauge-path').setAttribute('stroke-dasharray', '94, 100');
+        document.getElementById('stat-moist-val').innerText = '62.0 %';
+        document.getElementById('stat-moist-badge').innerText = 'Optimal';
+        document.getElementById('stat-ph-val').innerText = '6.80 pH';
+        document.getElementById('stat-ph-badge').innerText = 'Optimal';
+      } else if (sc === 'drought') {
+        document.getElementById('gauge-val').innerText = '42';
+        document.getElementById('gauge-cat').innerText = 'Severe Deficit';
+        document.getElementById('gauge-cat').className = 'text-xs font-bold px-2 py-0.5 rounded-md bg-rose-100 text-rose-800';
+        document.getElementById('gauge-path').setAttribute('stroke-dasharray', '42, 100');
+        document.getElementById('stat-moist-val').innerText = '18.0 %';
+        document.getElementById('stat-moist-badge').innerText = 'Critical Low';
+        document.getElementById('stat-ph-val').innerText = '5.10 pH';
+        document.getElementById('stat-ph-badge').innerText = 'Acidic';
+      } else if (sc === 'waterlogged') {
+        document.getElementById('gauge-val').innerText = '56';
+        document.getElementById('gauge-cat').innerText = 'Moisture Saturated';
+        document.getElementById('gauge-cat').className = 'text-xs font-bold px-2 py-0.5 rounded-md bg-amber-100 text-amber-800';
+        document.getElementById('gauge-path').setAttribute('stroke-dasharray', '56, 100');
+        document.getElementById('stat-moist-val').innerText = '88.0 %';
+        document.getElementById('stat-moist-badge').innerText = 'Saturated';
+        document.getElementById('stat-ph-val').innerText = '8.40 pH';
+        document.getElementById('stat-ph-badge').innerText = 'Alkaline';
+      }
+    }
+  
+    function recalculateCrops() {
+      const container = document.getElementById('crop-list-container');
+      container.innerHTML = `
+        <div class="p-3 bg-emerald-50/80 rounded-xl border border-emerald-300 animate-pulse">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-emerald-600 text-white text-[11px] font-bold flex items-center justify-center">#1</span>
+              <div>
+                <span class="font-bold text-xs text-slate-900">Cotton (कपास)</span>
+                <span class="text-[10px] text-slate-500 ml-1.5 font-medium">Kharif • High Confidence</span>
+              </div>
+            </div>
+            <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-600 text-white">96% Match</span>
+          </div>
+          <div class="w-full bg-slate-200 h-1.5 rounded-full mt-2 overflow-hidden">
+            <div class="bg-emerald-600 h-full rounded-full" style="width: 96%"></div>
+          </div>
+          <p class="text-[11px] text-slate-600 mt-1.5">Simulated adjustment: Elevated potassium & high moisture suitability favors deep-root fibrous crops.</p>
+        </div>
+        <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-slate-300 text-slate-700 text-[10px] font-bold flex items-center justify-center">#2</span>
+              <span class="font-bold text-xs text-slate-800">Wheat (गेहूँ)</span>
+              <span class="text-[10px] text-slate-500">Rabi</span>
+            </div>
+            <span class="text-xs font-bold text-slate-700">91% Match</span>
+          </div>
+          <div class="w-full bg-slate-200 h-1 rounded-full mt-1.5 overflow-hidden">
+            <div class="bg-emerald-500 h-full rounded-full" style="width: 91%"></div>
+          </div>
+        </div>
+        <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-slate-300 text-slate-700 text-[10px] font-bold flex items-center justify-center">#3</span>
+              <span class="font-bold text-xs text-slate-800">Rice (चावल)</span>
+              <span class="text-[10px] text-slate-500">Kharif</span>
+            </div>
+            <span class="text-xs font-bold text-slate-700">88% Match</span>
+          </div>
+          <div class="w-full bg-slate-200 h-1 rounded-full mt-1.5 overflow-hidden">
+            <div class="bg-emerald-500 h-full rounded-full" style="width: 88%"></div>
+          </div>
+        </div>
+      `;
+    }
+
+  </script>
+</body>
+</html>
