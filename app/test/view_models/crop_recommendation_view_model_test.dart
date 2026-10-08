@@ -26,12 +26,13 @@ void main() {
       viewModel.dispose();
     });
 
-    test('initial state has no result and is not loading', () {
+    test('initial state has seeded baseline result and is not loading', () {
       expect(viewModel.isLoading, false);
-      expect(viewModel.result, isNull);
-      expect(viewModel.top3Crops, isEmpty);
+      expect(viewModel.result, isNotNull);
+      expect(viewModel.top3Crops.isNotEmpty, true);
       expect(viewModel.errorMessage, isNull);
     });
+
 
     test('loadRecommendations populates result and top3Crops', () async {
       await viewModel.loadRecommendations('farmer_chaitanya_01');

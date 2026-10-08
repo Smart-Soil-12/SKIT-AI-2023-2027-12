@@ -4,6 +4,8 @@ import '../services/hardware_bridge_service.dart';
 import '../services/ml_engine_service.dart';
 import '../../data/services/backend_api_client.dart';
 import '../../data/repositories/soil_telemetry_repository.dart';
+import '../../data/repositories/crop_recommendation_repository.dart';
+import '../../ui/dashboard/view_models/crop_recommendation_view_model.dart';
 import '../../ui/dashboard/view_models/dashboard_view_model.dart';
 import '../../ui/scan/view_models/scan_view_model.dart';
 import '../../ui/yield/view_models/yield_view_model.dart';
@@ -23,10 +25,12 @@ class _SmartSoilAppStateState extends State<SmartSoilAppState> {
   late final LanguageProvider language;
   late final BackendApiClient backendClient;
   late final SoilTelemetryRepository telemetryRepo;
+  late final CropRecommendationRepository cropRepo;
   late final HardwareBridgeService hardwareBridge;
   late final MLEngineService mlEngine;
 
   late final DashboardViewModel dashboard;
+  late final CropRecommendationViewModel cropVm;
   late final ScanViewModel scan;
   late final YieldViewModel yieldVm;
   late final AiChatViewModel chat;
@@ -37,14 +41,21 @@ class _SmartSoilAppStateState extends State<SmartSoilAppState> {
     language = LanguageProvider()..addListener(_onStateChanged);
     backendClient = BackendApiClient();
     telemetryRepo = SoilTelemetryRepository(apiClient: backendClient);
+    cropRepo = CropRecommendationRepository(
+      telemetryRepository: telemetryRepo,
+      apiClient: backendClient,
+    );
     hardwareBridge = HardwareBridgeService();
     mlEngine = MLEngineService();
 
     dashboard = DashboardViewModel()..addListener(_onStateChanged);
+    cropVm = CropRecommendationViewModel(repository: cropRepo)
+      ..addListener(_onStateChanged);
     scan = ScanViewModel()..addListener(_onStateChanged);
     yieldVm = YieldViewModel()..addListener(_onStateChanged);
     chat = AiChatViewModel()..addListener(_onStateChanged);
   }
+
 
   void _onStateChanged() {
     if (mounted) setState(() {});
@@ -54,12 +65,14 @@ class _SmartSoilAppStateState extends State<SmartSoilAppState> {
   void dispose() {
     language.removeListener(_onStateChanged);
     dashboard.removeListener(_onStateChanged);
+    cropVm.removeListener(_onStateChanged);
     scan.removeListener(_onStateChanged);
     yieldVm.removeListener(_onStateChanged);
     chat.removeListener(_onStateChanged);
 
     language.dispose();
     dashboard.dispose();
+    cropVm.dispose();
     scan.dispose();
     yieldVm.dispose();
     chat.dispose();
@@ -73,9 +86,11 @@ class _SmartSoilAppStateState extends State<SmartSoilAppState> {
       language: language,
       backendClient: backendClient,
       telemetryRepo: telemetryRepo,
+      cropRepo: cropRepo,
       hardwareBridge: hardwareBridge,
       mlEngine: mlEngine,
       dashboard: dashboard,
+      cropVm: cropVm,
       scan: scan,
       yieldVm: yieldVm,
       chat: chat,
@@ -89,10 +104,12 @@ class SmartSoilScope extends InheritedWidget {
   final LanguageProvider language;
   final BackendApiClient backendClient;
   final SoilTelemetryRepository telemetryRepo;
+  final CropRecommendationRepository cropRepo;
   final HardwareBridgeService hardwareBridge;
   final MLEngineService mlEngine;
 
   final DashboardViewModel dashboard;
+  final CropRecommendationViewModel cropVm;
   final ScanViewModel scan;
   final YieldViewModel yieldVm;
   final AiChatViewModel chat;
@@ -102,14 +119,17 @@ class SmartSoilScope extends InheritedWidget {
     required this.language,
     required this.backendClient,
     required this.telemetryRepo,
+    required this.cropRepo,
     required this.hardwareBridge,
     required this.mlEngine,
     required this.dashboard,
+    required this.cropVm,
     required this.scan,
     required this.yieldVm,
     required this.chat,
     required super.child,
   });
+
 
   static SmartSoilScope of(BuildContext context) {
     final scope = context.dependOnInheritedWidgetOfExactType<SmartSoilScope>();

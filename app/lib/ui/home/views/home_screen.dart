@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/state/smart_soil_scope.dart';
+import '../../dashboard/widgets/crop_recommendation_card.dart';
 import '../widgets/hero_crop_scanner_card.dart';
 import '../widgets/weather_risk_card.dart';
 import '../widgets/soil_telemetry_summary.dart';
@@ -18,11 +19,16 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final vm = SmartSoilScope.of(context).dashboard;
+    final scope = SmartSoilScope.of(context);
+    final vm = scope.dashboard;
+    final cropVm = scope.cropVm;
 
     return RefreshIndicator(
       onRefresh: () async {
-        await vm.refreshData();
+        await Future.wait([
+          vm.refreshData(),
+          cropVm.loadRecommendations('farmer_chaitanya_01'),
+        ]);
       },
       child: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -31,6 +37,13 @@ class HomeScreen extends StatelessWidget {
           const SizedBox(height: 16),
           const WeatherRiskCard(),
           const SizedBox(height: 16),
+          if (cropVm.result != null) ...[
+            CropRecommendationCard(
+              recommendationResult: cropVm.result!,
+              onRefresh: () => cropVm.loadRecommendations('farmer_chaitanya_01'),
+            ),
+            const SizedBox(height: 16),
+          ],
           SoilTelemetrySummary(onViewFullTelemetry: onNavigateToFarm),
           const SizedBox(height: 20),
           const FarmersNewsSection(),
@@ -40,3 +53,4 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+

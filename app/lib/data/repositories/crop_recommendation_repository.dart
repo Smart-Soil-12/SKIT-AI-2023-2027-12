@@ -117,7 +117,7 @@ class CropRecommendationRepository {
       return result;
     } catch (_) {
       // 3. Fallback to offline multi-parameter scoring engine
-      final ranked = _rankCropsLocally(soilProfile, topK);
+      final ranked = rankCropsLocally(soilProfile, topK);
       final result = CropRecommendationResult(
         farmerId: farmerId,
         generatedAt: DateTime.now(),
@@ -130,10 +130,11 @@ class CropRecommendationRepository {
   }
 
   /// Offline agronomic scoring algorithm based on Normalized Euclidean Proximity.
-  List<CropRecommendationItem> _rankCropsLocally(
+  List<CropRecommendationItem> rankCropsLocally(
     Map<String, double> soil,
     int topK,
   ) {
+
     final n = soil['N'] ?? 80.0;
     final p = soil['P'] ?? 40.0;
     final k = soil['K'] ?? 150.0;

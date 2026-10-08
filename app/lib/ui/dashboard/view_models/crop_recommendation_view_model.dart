@@ -12,7 +12,15 @@ class CropRecommendationViewModel extends ChangeNotifier {
   String? _errorMessage;
   CropRecommendationResult? _result;
 
-  CropRecommendationViewModel({required this.repository});
+  CropRecommendationViewModel({required this.repository}) {
+    final initialSoil = repository.telemetryRepository.computeAggregatedSoilProfile('farmer_chaitanya_01');
+    _result = CropRecommendationResult(
+      farmerId: 'farmer_chaitanya_01',
+      generatedAt: DateTime.now(),
+      soilParametersUsed: initialSoil,
+      recommendations: repository.rankCropsLocally(initialSoil, 3),
+    );
+  }
 
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
