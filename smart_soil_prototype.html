@@ -210,7 +210,7 @@
           <!-- Top-3 Crop List -->
           <div class="space-y-2.5" id="crop-list-container">
             <!-- Rank 1: Wheat -->
-            <div class="p-3 bg-emerald-50/60 rounded-xl border border-emerald-200">
+            <div onclick="openCropModal('Wheat')" class="p-3 bg-emerald-50/60 rounded-xl border border-emerald-200 cursor-pointer hover:shadow-md hover:border-emerald-300 transition active:scale-98">
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
                   <span class="w-6 h-6 rounded-full bg-emerald-600 text-white text-[11px] font-bold flex items-center justify-center">#1</span>
@@ -225,10 +225,11 @@
                 <div class="bg-emerald-600 h-full rounded-full" style="width: 94%"></div>
               </div>
               <p class="text-[11px] text-slate-600 mt-1.5">Optimal soil pH (6.8) and balanced NPK ratio support vigorous tillering and high yield.</p>
+              <p class="text-[10px] text-emerald-700 font-semibold mt-1 text-right">Tap for fertilizer plan & details ➔</p>
             </div>
 
             <!-- Rank 2: Maize -->
-            <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+            <div onclick="openCropModal('Maize')" class="p-2.5 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer hover:shadow-md hover:border-slate-300 transition active:scale-98">
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
                   <span class="w-5 h-5 rounded-full bg-slate-300 text-slate-700 text-[10px] font-bold flex items-center justify-center">#2</span>
@@ -240,10 +241,11 @@
               <div class="w-full bg-slate-200 h-1 rounded-full mt-1.5 overflow-hidden">
                 <div class="bg-emerald-500 h-full rounded-full" style="width: 86%"></div>
               </div>
+              <p class="text-[10px] text-emerald-700 font-semibold mt-1 text-right">Tap for fertilizer plan & details ➔</p>
             </div>
 
             <!-- Rank 3: Chickpea -->
-            <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+            <div onclick="openCropModal('Chickpea')" class="p-2.5 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer hover:shadow-md hover:border-slate-300 transition active:scale-98">
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
                   <span class="w-5 h-5 rounded-full bg-slate-300 text-slate-700 text-[10px] font-bold flex items-center justify-center">#3</span>
@@ -255,6 +257,7 @@
               <div class="w-full bg-slate-200 h-1 rounded-full mt-1.5 overflow-hidden">
                 <div class="bg-emerald-500 h-full rounded-full" style="width: 78%"></div>
               </div>
+              <p class="text-[10px] text-emerald-700 font-semibold mt-1 text-right">Tap for fertilizer plan & details ➔</p>
             </div>
           </div>
 
@@ -568,10 +571,148 @@
 
   </div>
 
+  <!-- Crop Detail & Fertilizer Advisory Bottom Sheet Modal -->
+  <div id="crop-modal" class="fixed inset-0 bg-black/60 z-50 flex items-end justify-center hidden" onclick="closeCropModal(event)">
+    <div class="bg-white w-full max-w-sm rounded-t-3xl p-5 shadow-2xl max-h-[85vh] overflow-y-auto animate-in slide-in-from-bottom" onclick="event.stopPropagation()">
+      <div class="w-10 h-1 bg-slate-300 rounded-full mx-auto mb-4"></div>
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 id="modal-crop-name" class="text-base font-bold text-slate-900">Wheat (गेहूँ)</h3>
+          <p id="modal-crop-season" class="text-xs text-slate-500 font-medium">Rabi Season • High Suitability</p>
+        </div>
+        <span id="modal-crop-match" class="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-600 text-white">94% Match</span>
+      </div>
+      <div class="border-t border-slate-100 my-3"></div>
+      <h4 class="text-xs font-bold text-slate-800 mb-2">Soil Nutrient Status vs Requirement</h4>
+      <div class="space-y-1.5 text-xs">
+        <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg">
+          <span class="font-medium text-slate-600">Nitrogen (N)</span>
+          <span id="modal-n-status" class="font-bold text-emerald-700">85 mg/kg (Optimal)</span>
+        </div>
+        <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg">
+          <span class="font-medium text-slate-600">Phosphorus (P)</span>
+          <span id="modal-p-status" class="font-bold text-amber-700">38 mg/kg (Slight Deficit)</span>
+        </div>
+        <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg">
+          <span class="font-medium text-slate-600">Potassium (K)</span>
+          <span id="modal-k-status" class="font-bold text-emerald-700">180 mg/kg (Optimal Buffer)</span>
+        </div>
+        <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg">
+          <span class="font-medium text-slate-600">Soil Reaction (pH)</span>
+          <span id="modal-ph-status" class="font-bold text-purple-700">6.80 pH (Optimal Range)</span>
+        </div>
+        <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg">
+          <span class="font-medium text-slate-600">Root Moisture</span>
+          <span id="modal-moist-status" class="font-bold text-sky-700">62.0% (Optimal)</span>
+        </div>
+      </div>
+      <div class="border-t border-slate-100 my-3"></div>
+      <h4 class="text-xs font-bold text-teal-800 mb-1.5 flex items-center gap-1.5">
+        <svg class="w-4 h-4 text-teal-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+        Targeted Fertilizer & Soil Advisory
+      </h4>
+      <div id="modal-advice-box" class="bg-teal-50/70 border border-teal-200 rounded-xl p-3 text-xs text-teal-950 space-y-1.5">
+      </div>
+      <button onclick="closeCropModalDirect()" class="w-full mt-4 py-2.5 bg-emerald-700 text-white rounded-xl font-bold text-xs shadow hover:bg-emerald-800 transition">
+        Back to Dashboard / वापस जाएं
+      </button>
+    </div>
+  </div>
+
   <script>
     let currentTab = 0;
     let currentLocale = 'en';
     let currentSample = 'early';
+
+    const cropDatabase = {
+      'Wheat': {
+        name: 'Wheat (गेहूँ)',
+        season: 'Rabi Season • High Suitability',
+        match: '94% Match',
+        n: '85 mg/kg (Optimal)',
+        p: '38 mg/kg (Slight Deficit)',
+        k: '180 mg/kg (Optimal Buffer)',
+        ph: '6.80 pH (Optimal Range)',
+        moist: '62.0% (Optimal)',
+        advice: [
+          'Nitrogen: Balanced at 85 mg/kg. Plan split application: 35 kg/acre urea at first crown-root initiation irrigation (21 days).',
+          'Phosphorus: Slight deficit (38 vs 42 mg/kg). Apply 20 kg/acre DAP during secondary tillage as basal nutrition.',
+          'Potassium & pH: Excellent root-zone retention. No lime or gypsum amendment required.'
+        ]
+      },
+      'Maize': {
+        name: 'Maize (मक्का)',
+        season: 'Kharif Season • High Suitability',
+        match: '86% Match',
+        n: '85 mg/kg (Optimal)',
+        p: '38 mg/kg (Optimal)',
+        k: '180 mg/kg (High Buffer)',
+        ph: '6.80 pH (Optimal)',
+        moist: '62.0% (Optimal)',
+        advice: [
+          'Nitrogen: High demand crop; current 85 mg/kg provides strong start. Side-dress with 30 kg urea at knee-high stage.',
+          'Phosphorus: 38 mg/kg meets maize seedling demand for vigorous root expansion.',
+          'Moisture: Maintain well-drained conditions; avoid standing water around root crowns.'
+        ]
+      },
+      'Chickpea': {
+        name: 'Chickpea (चना)',
+        season: 'Rabi Season • Moderate Suitability',
+        match: '78% Match',
+        n: '85 mg/kg (Excess N)',
+        p: '38 mg/kg (Deficit)',
+        k: '180 mg/kg (High Buffer)',
+        ph: '6.80 pH (Optimal)',
+        moist: '62.0% (Moderate High)',
+        advice: [
+          'Nitrogen Caution: Soil nitrogen is relatively high (85 mg/kg). Omit basal urea to prevent excessive vegetative lodging.',
+          'Phosphorus Deficit: Chickpea demands high P for nodulation. Apply 30 kg/acre Single Super Phosphate (SSP).',
+          'Biological Fixation: Symbiotic rhizobia will naturally enrich plot nitrogen for subsequent crop cycles.'
+        ]
+      },
+      'Cotton': {
+        name: 'Cotton (कपास)',
+        season: 'Kharif Season • High Confidence',
+        match: '96% Match',
+        n: '85 mg/kg (Slight Deficit)',
+        p: '38 mg/kg (Optimal)',
+        k: '180 mg/kg (Optimal High)',
+        ph: '6.80 pH (Optimal)',
+        moist: '62.0% (Optimal)',
+        advice: [
+          'Potassium Synergy: High potassium (180 mg/kg) directly drives superior boll size and fiber strength.',
+          'Nitrogen: Top-dress with 25 kg/acre urea during flowering and boll formation.',
+          'Sub-surface tap roots will leverage current deep moisture reserves effectively.'
+        ]
+      }
+    };
+
+    function openCropModal(cropName) {
+      const data = cropDatabase[cropName] || cropDatabase['Wheat'];
+      document.getElementById('modal-crop-name').innerText = data.name;
+      document.getElementById('modal-crop-season').innerText = data.season;
+      document.getElementById('modal-crop-match').innerText = data.match;
+      document.getElementById('modal-n-status').innerText = data.n;
+      document.getElementById('modal-p-status').innerText = data.p;
+      document.getElementById('modal-k-status').innerText = data.k;
+      document.getElementById('modal-ph-status').innerText = data.ph;
+      document.getElementById('modal-moist-status').innerText = data.moist;
+
+      const adviceBox = document.getElementById('modal-advice-box');
+      adviceBox.innerHTML = data.advice.map(adv => `<p class="flex items-start gap-1.5"><span class="font-bold text-teal-600">•</span><span>${adv}</span></p>`).join('');
+
+      document.getElementById('crop-modal').classList.remove('hidden');
+    }
+
+    function closeCropModalDirect() {
+      document.getElementById('crop-modal').classList.add('hidden');
+    }
+
+    function closeCropModal(e) {
+      if (e.target.id === 'crop-modal') {
+        closeCropModalDirect();
+      }
+    }
 
     const translations = {
       en: {

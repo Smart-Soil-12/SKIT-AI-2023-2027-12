@@ -151,5 +151,31 @@ void main() {
 
       expect(refreshed, true);
     });
+
+    testWidgets('tapping crop tile opens CropDetailBottomSheet with fertilizer advisory', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SingleChildScrollView(
+              child: CropRecommendationCard(
+                recommendationResult: testResult,
+              ),
+            ),
+          ),
+        ),
+      );
+
+      // Verify affordance text
+      expect(find.text('View Fertilizer Plan & Details'), findsNWidgets(3));
+
+      // Tap on the first crop tile (Wheat)
+      await tester.tap(find.text('Wheat'));
+      await tester.pumpAndSettle();
+
+      // Verify bottom sheet content renders
+      expect(find.text('Soil Nutrient Status vs Crop Requirement'), findsOneWidget);
+      expect(find.text('Recommended Soil Amendment & Fertilizer'), findsOneWidget);
+      expect(find.text('Back to Dashboard / वापस जाएं'), findsOneWidget);
+    });
   });
 }

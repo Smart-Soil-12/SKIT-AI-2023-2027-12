@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../data/models/crop_recommendation_model.dart';
+import 'crop_detail_bottom_sheet.dart';
 
 /// Top-3 Crop Recommendation UI Component for Smart Soil
 /// Fulfills Form-1 Objective 3 & Form-2 Sprint 4 / Sprint 5 Task:
@@ -95,7 +96,7 @@ class CropRecommendationCard extends StatelessWidget {
     final primaryColor = isTopRank ? Colors.green.shade700 : Colors.blueGrey.shade700;
     final badgeColor = isTopRank ? Colors.green.shade100 : Colors.grey.shade200;
 
-    return Container(
+    final tileContent = Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -184,7 +185,38 @@ class CropRecommendationCard extends StatelessWidget {
               style: TextStyle(fontSize: 12, color: Colors.grey.shade800),
             ),
           ],
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(
+                'View Fertilizer Plan & Details',
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                  color: primaryColor,
+                ),
+              ),
+              const SizedBox(width: 4),
+              Icon(Icons.arrow_forward_ios, size: 10, color: primaryColor),
+            ],
+          ),
         ],
+      ),
+    );
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () {
+          CropDetailBottomSheet.show(
+            context,
+            crop: crop,
+            currentSoil: recommendationResult.soilParametersUsed,
+          );
+        },
+        child: tileContent,
       ),
     );
   }
