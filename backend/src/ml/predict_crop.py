@@ -1,4 +1,4 @@
-"""Crop prediction utilities for SmartSoil AI."""
+
 
 from pathlib import Path
 
@@ -76,8 +76,7 @@ def predict_crop(soil_data):
     results = []
 
     for crop_id, score in ranked:
-        if score <= 0:
-            continue
+        
 
         crop_id = int(crop_id)
 
