@@ -3,6 +3,7 @@ import '../../core/app_theme.dart';
 import '../../../core/state/smart_soil_scope.dart';
 import '../../dashboard/widgets/soil_health_gauge_card.dart';
 import '../../dashboard/widgets/sensor_metric_card.dart';
+import '../../dashboard/widgets/soil_telemetry_trend_card.dart';
 
 /// Full Multi-Sensor Farm Telemetry & IoT Node Screen.
 class FarmSoilTelemetryScreen extends StatelessWidget {
@@ -82,6 +83,8 @@ class FarmSoilTelemetryScreen extends StatelessWidget {
         ),
         const SizedBox(height: 14),
         SoilHealthGaugeCard(viewModel: vm),
+        const SizedBox(height: 14),
+        const SoilTelemetryTrendCard(),
         const SizedBox(height: 14),
         SensorMetricCard(
           title: lang.tr('soil_moisture'),

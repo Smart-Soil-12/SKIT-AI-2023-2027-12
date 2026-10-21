@@ -134,5 +134,22 @@ void main() {
       expect(topCrop.agronomicHighlights.isNotEmpty, true);
       expect(cropRepo.cachedRecommendation, isNotNull);
     });
+
+    test('rankCropsLocally accurately evaluates across full 22-crop ML knowledge base', () {
+      // High phosphorus & potash soil condition (favorable to Grapes / Apple)
+      final orchardSoil = {
+        'N': 25.0,
+        'P': 130.0,
+        'K': 195.0,
+        'pH': 6.0,
+      };
+
+      final ranked = cropRepo.rankCropsLocally(orchardSoil, 5);
+      expect(ranked.length, 5);
+      // Grapes or Apple should be among the top recommendations
+      final cropNames = ranked.map((r) => r.cropName).toList();
+      expect(cropNames.contains('Grapes') || cropNames.contains('Apple'), true);
+      expect(ranked.first.suitabilityScore >= 0.80, true);
+    });
   });
 }

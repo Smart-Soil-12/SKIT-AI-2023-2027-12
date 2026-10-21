@@ -488,6 +488,41 @@
             <option value="drought">🔥 Drought Alert</option>
             <option value="waterlogged">💧 Waterlogged</option>
           </select>
+        <!-- 7-Day Multi-Sensor Soil Telemetry Trend Card (Sprint 6 Core) -->
+        <div class="bg-white p-3.5 rounded-2xl shadow-sm border border-slate-200/80">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-2">
+              <span class="p-1.5 rounded-lg bg-emerald-50 text-emerald-700">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
+              </span>
+              <div>
+                <p class="text-xs font-bold text-slate-800">7-Day Soil Telemetry Trend</p>
+                <p class="text-[9px] text-slate-500">7-दिवसीय ऐतिहासिक मिट्टी रुझान</p>
+              </div>
+            </div>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 flex items-center gap-1">
+              <span>↗</span> Stable
+            </span>
+          </div>
+
+          <!-- Trend Bar Graph -->
+          <div class="bg-slate-50 p-2.5 rounded-xl">
+            <div class="flex justify-between text-[9px] font-semibold text-slate-600 mb-1.5">
+              <span>7-Day Avg: <b class="text-slate-800">54.0%</b></span>
+              <span>Min: <b class="text-slate-800">44.5%</b></span>
+              <span>Max: <b class="text-slate-800">58.0%</b></span>
+            </div>
+            <div class="flex items-end justify-between h-14 pt-2 px-1">
+              <div class="flex flex-col items-center gap-1"><div class="w-3 bg-emerald-400/60 rounded-t" style="height: 38px"></div><span class="text-[8px] text-slate-400">D-6</span></div>
+              <div class="flex flex-col items-center gap-1"><div class="w-3 bg-emerald-400/60 rounded-t" style="height: 36px"></div><span class="text-[8px] text-slate-400">D-5</span></div>
+              <div class="flex flex-col items-center gap-1"><div class="w-3 bg-emerald-400/60 rounded-t" style="height: 32px"></div><span class="text-[8px] text-slate-400">D-4</span></div>
+              <div class="flex flex-col items-center gap-1"><div class="w-3 bg-emerald-400/60 rounded-t" style="height: 30px"></div><span class="text-[8px] text-slate-400">D-3</span></div>
+              <div class="flex flex-col items-center gap-1"><div class="w-3 bg-emerald-400/60 rounded-t" style="height: 28px"></div><span class="text-[8px] text-slate-400">D-2</span></div>
+              <div class="flex flex-col items-center gap-1"><div class="w-3 bg-emerald-500 rounded-t" style="height: 44px"></div><span class="text-[8px] text-slate-400">D-1</span></div>
+              <div class="flex flex-col items-center gap-1"><div class="w-3 bg-emerald-600 rounded-t" style="height: 42px"></div><span class="text-[8px] font-bold text-emerald-800">Today</span></div>
+            </div>
+          </div>
+          <p class="text-[9px] text-slate-400 mt-2 italic">Active Metric: Moisture (नमी) • Multi-sensor IoT archive calibrated.</p>
         </div>
 
         <!-- 6 Telemetry Cards -->
