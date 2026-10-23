@@ -21,13 +21,13 @@ def valid_input():
 def test_valid_prediction(valid_input):
     results = predict_crop(valid_input)
 
-    assert 1 <= len(results) <= 3
+    assert len(results) == 3
     assert len({item["crop"] for item in results}) == len(results)
 
     for item in results:
         assert isinstance(item["crop"], str)
         assert item["crop"]
-        assert 0 < item["confidence"] <= 100
+        assert 0 <= item["confidence"] <= 100
 
 
 def test_missing_feature_rejected(valid_input):
