@@ -151,7 +151,7 @@
                   <span class="text-xl font-extrabold text-slate-900">23.4°C</span>
                   <span id="risk-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-rose-100 text-rose-700">High Risk</span>
                 </div>
-                <p class="text-[11px] text-slate-500">Light rain shower • Jaipur, Rajasthan</p>
+                <p id="weather-location-text" class="text-[11px] text-slate-500">Light rain shower • Jaipur, Rajasthan</p>
               </div>
             </div>
           </div>
@@ -202,7 +202,7 @@
                 <p id="crop-rec-sub" class="text-[10px] text-slate-500">AI-Driven Field Suitability</p>
               </div>
             </div>
-            <button onclick="recalculateCrops()" class="text-xs font-semibold px-2.5 py-1 bg-emerald-50 text-emerald-800 rounded-lg border border-emerald-200 hover:bg-emerald-100 transition active:scale-95">
+            <button id="crop-rec-btn" onclick="recalculateCrops()" class="text-xs font-semibold px-2.5 py-1 bg-emerald-50 text-emerald-800 rounded-lg border border-emerald-200 hover:bg-emerald-100 transition active:scale-95">
               🔄 Recalculate
             </button>
           </div>
@@ -215,8 +215,8 @@
                 <div class="flex items-center gap-2">
                   <span class="w-6 h-6 rounded-full bg-emerald-600 text-white text-[11px] font-bold flex items-center justify-center">#1</span>
                   <div>
-                    <span class="font-bold text-xs text-slate-900">Wheat (गेहूँ)</span>
-                    <span class="text-[10px] text-slate-500 ml-1.5 font-medium">Rabi • High Confidence</span>
+                    <span id="crop-1-name" class="font-bold text-xs text-slate-900">Wheat (गेहूँ)</span>
+                    <span id="crop-1-season" class="text-[10px] text-slate-500 ml-1.5 font-medium">Rabi • High Confidence</span>
                   </div>
                 </div>
                 <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-600 text-white">94% Match</span>
@@ -224,8 +224,8 @@
               <div class="w-full bg-slate-200 h-1.5 rounded-full mt-2 overflow-hidden">
                 <div class="bg-emerald-600 h-full rounded-full" style="width: 94%"></div>
               </div>
-              <p class="text-[11px] text-slate-600 mt-1.5">Optimal soil pH (6.8) and balanced NPK ratio support vigorous tillering and high yield.</p>
-              <p class="text-[10px] text-emerald-700 font-semibold mt-1 text-right">Tap for fertilizer plan & details ➔</p>
+              <p id="crop-1-desc" class="text-[11px] text-slate-600 mt-1.5">Optimal soil pH (6.8) and balanced NPK ratio support vigorous tillering and high yield.</p>
+              <p class="crop-tap-hint text-[10px] text-emerald-700 font-semibold mt-1 text-right">Tap for fertilizer plan & details ➔</p>
             </div>
 
             <!-- Rank 2: Maize -->
@@ -241,7 +241,7 @@
               <div class="w-full bg-slate-200 h-1 rounded-full mt-1.5 overflow-hidden">
                 <div class="bg-emerald-500 h-full rounded-full" style="width: 86%"></div>
               </div>
-              <p class="text-[10px] text-emerald-700 font-semibold mt-1 text-right">Tap for fertilizer plan & details ➔</p>
+              <p class="crop-tap-hint text-[10px] text-emerald-700 font-semibold mt-1 text-right">Tap for fertilizer plan & details ➔</p>
             </div>
 
             <!-- Rank 3: Chickpea -->
@@ -257,13 +257,13 @@
               <div class="w-full bg-slate-200 h-1 rounded-full mt-1.5 overflow-hidden">
                 <div class="bg-emerald-500 h-full rounded-full" style="width: 78%"></div>
               </div>
-              <p class="text-[10px] text-emerald-700 font-semibold mt-1 text-right">Tap for fertilizer plan & details ➔</p>
+              <p class="crop-tap-hint text-[10px] text-emerald-700 font-semibold mt-1 text-right">Tap for fertilizer plan & details ➔</p>
             </div>
           </div>
 
           <div class="mt-3 flex items-center justify-between text-[10px] text-slate-400 border-t border-slate-100 pt-2">
-            <span>Soil Baseline: N:85 P:42 K:180 | pH:6.8</span>
-            <span class="text-emerald-700 font-semibold">Target: High Harvest Yield</span>
+            <span id="crop-baseline-text">Soil Baseline: N:85 P:42 K:180 | pH:6.8</span>
+            <span id="crop-target-text" class="text-emerald-700 font-semibold">Target: High Harvest Yield</span>
           </div>
         </div>
 
@@ -290,22 +290,22 @@
             </div>
             <div>
               <span id="gauge-cat" class="text-xs font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800">Optimal Health</span>
-              <p class="text-[11px] text-slate-500 mt-1">Multi-sensor weighted evaluation across pH, Moisture & NPK.</p>
+              <p id="gauge-sub" class="text-[11px] text-slate-500 mt-1">Multi-sensor weighted evaluation across pH, Moisture & NPK.</p>
             </div>
           </div>
 
           <!-- 3 Mini Sensors -->
           <div class="grid grid-cols-3 gap-2 mt-3">
             <div class="bg-[#F7FAF7] rounded-xl p-2 border border-slate-100">
-              <p class="text-[10px] text-slate-500 font-semibold">Moisture</p>
+              <p id="home-moist-lbl" class="text-[10px] text-slate-500 font-semibold">Moisture</p>
               <p class="text-xs font-bold text-sky-700 mt-0.5">62.0 %</p>
             </div>
             <div class="bg-[#F7FAF7] rounded-xl p-2 border border-slate-100">
-              <p class="text-[10px] text-slate-500 font-semibold">Soil pH</p>
+              <p id="home-ph-lbl" class="text-[10px] text-slate-500 font-semibold">Soil pH</p>
               <p class="text-xs font-bold text-purple-700 mt-0.5">6.80 pH</p>
             </div>
             <div class="bg-[#F7FAF7] rounded-xl p-2 border border-slate-100">
-              <p class="text-[10px] text-slate-500 font-semibold">Nitrogen</p>
+              <p id="home-n-lbl" class="text-[10px] text-slate-500 font-semibold">Nitrogen</p>
               <p class="text-xs font-bold text-emerald-700 mt-0.5">85 mg/kg</p>
             </div>
           </div>
@@ -446,16 +446,16 @@
       <div id="tab-ai-content" class="p-3 flex flex-col h-full hidden">
         <!-- Quick Prompt Chips -->
         <div class="flex gap-1.5 overflow-x-auto pb-2 shrink-0">
-          <button onclick="sendQuickPrompt('Treat fungal blight?')" class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-[#0B6638] border border-emerald-200 whitespace-nowrap">Treat fungal blight?</button>
-          <button onclick="sendQuickPrompt('Best fertilizer for current soil pH?')" class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-[#0B6638] border border-emerald-200 whitespace-nowrap">Fertilizer for soil pH?</button>
-          <button onclick="sendQuickPrompt('Is moisture optimal for sowing?')" class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-[#0B6638] border border-emerald-200 whitespace-nowrap">Moisture for sowing?</button>
+          <button id="chip-0" onclick="sendQuickPrompt(this.innerText)" class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-[#0B6638] border border-emerald-200 whitespace-nowrap">Treat fungal blight?</button>
+          <button id="chip-1" onclick="sendQuickPrompt(this.innerText)" class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-[#0B6638] border border-emerald-200 whitespace-nowrap">Fertilizer for soil pH?</button>
+          <button id="chip-2" onclick="sendQuickPrompt(this.innerText)" class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-[#0B6638] border border-emerald-200 whitespace-nowrap">Moisture for sowing?</button>
         </div>
 
         <div id="chat-stream" class="flex-1 space-y-3 overflow-y-auto p-2 bg-[#F7FAF7] rounded-xl border border-slate-100 min-h-[360px]">
           <!-- AI Welcome Bubble -->
           <div class="flex items-start gap-2 max-w-[85%]">
             <div class="w-6 h-6 rounded-full bg-[#0B6638] text-white flex items-center justify-center text-xs shrink-0 font-bold">AI</div>
-            <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-xs text-xs text-slate-800 leading-relaxed border border-slate-100">
+            <div id="chat-welcome-msg" class="bg-white p-3 rounded-2xl rounded-tl-none shadow-xs text-xs text-slate-800 leading-relaxed border border-slate-100">
               Hello! I am your Smart Soil AI Assistant. Ask me anything about crop diseases, soil health, or fertilizer schedules.
             </div>
           </div>
@@ -479,15 +479,17 @@
             <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></div>
             <div>
               <p class="text-xs font-bold text-slate-900">ESP32_AI12_NODE_01</p>
-              <p class="text-[10px] text-slate-500">Connected • Telemetry Live</p>
+              <p id="node-status-text" class="text-[10px] text-slate-500">Connected • Telemetry Live</p>
             </div>
           </div>
           <!-- Scenario selector -->
-          <select onchange="switchScenario(this.value)" class="text-[11px] font-bold bg-emerald-50 text-[#0B6638] border border-emerald-200 rounded-lg px-2 py-1 outline-none">
-            <option value="optimal">🌱 Optimal Soil</option>
-            <option value="drought">🔥 Drought Alert</option>
-            <option value="waterlogged">💧 Waterlogged</option>
+          <select id="scenario-selector" onchange="switchScenario(this.value)" class="text-[11px] font-bold bg-emerald-50 text-[#0B6638] border border-emerald-200 rounded-lg px-2 py-1 outline-none">
+            <option id="scen-opt" value="optimal">🌱 Optimal Soil</option>
+            <option id="scen-drought" value="drought">🔥 Drought Alert</option>
+            <option id="scen-waterlogged" value="waterlogged">💧 Waterlogged</option>
           </select>
+        </div>
+
         <!-- 7-Day Multi-Sensor Soil Telemetry Trend Card (Sprint 6 Core) -->
         <div class="bg-white p-3.5 rounded-2xl shadow-sm border border-slate-200/80">
           <div class="flex items-center justify-between mb-2">
@@ -496,21 +498,21 @@
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
               </span>
               <div>
-                <p class="text-xs font-bold text-slate-800">7-Day Soil Telemetry Trend</p>
-                <p class="text-[9px] text-slate-500">7-दिवसीय ऐतिहासिक मिट्टी रुझान</p>
+                <p id="trend-title" class="text-xs font-bold text-slate-800">7-Day Soil Telemetry Trend</p>
+                <p id="trend-sub" class="text-[9px] text-slate-500">7-Day Historical Sensor Trend</p>
               </div>
             </div>
-            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 flex items-center gap-1">
-              <span>↗</span> Stable
+            <span id="trend-status" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 flex items-center gap-1">
+              <span>↗</span> <span id="trend-status-txt">Stable</span>
             </span>
           </div>
 
           <!-- Trend Bar Graph -->
           <div class="bg-slate-50 p-2.5 rounded-xl">
             <div class="flex justify-between text-[9px] font-semibold text-slate-600 mb-1.5">
-              <span>7-Day Avg: <b class="text-slate-800">54.0%</b></span>
-              <span>Min: <b class="text-slate-800">44.5%</b></span>
-              <span>Max: <b class="text-slate-800">58.0%</b></span>
+              <span><span id="trend-avg-label">7-Day Avg:</span> <b id="trend-avg-val" class="text-slate-800">54.0%</b></span>
+              <span><span id="trend-min-label">Min:</span> <b id="trend-min-val" class="text-slate-800">44.5%</b></span>
+              <span><span id="trend-max-label">Max:</span> <b id="trend-max-val" class="text-slate-800">58.0%</b></span>
             </div>
             <div class="flex items-end justify-between h-14 pt-2 px-1">
               <div class="flex flex-col items-center gap-1"><div class="w-3 bg-emerald-400/60 rounded-t" style="height: 38px"></div><span class="text-[8px] text-slate-400">D-6</span></div>
@@ -519,17 +521,17 @@
               <div class="flex flex-col items-center gap-1"><div class="w-3 bg-emerald-400/60 rounded-t" style="height: 30px"></div><span class="text-[8px] text-slate-400">D-3</span></div>
               <div class="flex flex-col items-center gap-1"><div class="w-3 bg-emerald-400/60 rounded-t" style="height: 28px"></div><span class="text-[8px] text-slate-400">D-2</span></div>
               <div class="flex flex-col items-center gap-1"><div class="w-3 bg-emerald-500 rounded-t" style="height: 44px"></div><span class="text-[8px] text-slate-400">D-1</span></div>
-              <div class="flex flex-col items-center gap-1"><div class="w-3 bg-emerald-600 rounded-t" style="height: 42px"></div><span class="text-[8px] font-bold text-emerald-800">Today</span></div>
+              <div class="flex flex-col items-center gap-1"><div class="w-3 bg-emerald-600 rounded-t" style="height: 42px"></div><span id="trend-today-label" class="text-[8px] font-bold text-emerald-800">Today</span></div>
             </div>
           </div>
-          <p class="text-[9px] text-slate-400 mt-2 italic">Active Metric: Moisture (नमी) • Multi-sensor IoT archive calibrated.</p>
+          <p id="trend-footnote" class="text-[9px] text-slate-400 mt-2 italic">Active Metric: Moisture (नमी) • Multi-sensor IoT archive calibrated.</p>
         </div>
 
         <!-- 6 Telemetry Cards -->
         <div class="grid grid-cols-2 gap-2.5">
           <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200/80">
             <div class="flex items-center justify-between">
-              <span class="text-[11px] font-semibold text-slate-500">Moisture</span>
+              <span id="card-label-moist" class="text-[11px] font-semibold text-slate-500">Moisture</span>
               <span id="stat-moist-badge" class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">Optimal</span>
             </div>
             <p id="stat-moist-val" class="text-lg font-bold text-sky-700 mt-1">62.0 %</p>
@@ -537,7 +539,7 @@
 
           <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200/80">
             <div class="flex items-center justify-between">
-              <span class="text-[11px] font-semibold text-slate-500">Soil pH</span>
+              <span id="card-label-ph" class="text-[11px] font-semibold text-slate-500">Soil pH</span>
               <span id="stat-ph-badge" class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">Optimal</span>
             </div>
             <p id="stat-ph-val" class="text-lg font-bold text-purple-700 mt-1">6.80 pH</p>
@@ -545,7 +547,7 @@
 
           <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200/80">
             <div class="flex items-center justify-between">
-              <span class="text-[11px] font-semibold text-slate-500">Nitrogen (N)</span>
+              <span id="card-label-n" class="text-[11px] font-semibold text-slate-500">Nitrogen (N)</span>
               <span id="stat-n-badge" class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">Optimal</span>
             </div>
             <p id="stat-n-val" class="text-lg font-bold text-emerald-700 mt-1">85 mg/kg</p>
@@ -553,7 +555,7 @@
 
           <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200/80">
             <div class="flex items-center justify-between">
-              <span class="text-[11px] font-semibold text-slate-500">Phosphorus (P)</span>
+              <span id="card-label-p" class="text-[11px] font-semibold text-slate-500">Phosphorus (P)</span>
               <span id="stat-p-badge" class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">Optimal</span>
             </div>
             <p id="stat-p-val" class="text-lg font-bold text-amber-700 mt-1">38 mg/kg</p>
@@ -561,7 +563,7 @@
 
           <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200/80">
             <div class="flex items-center justify-between">
-              <span class="text-[11px] font-semibold text-slate-500">Potassium (K)</span>
+              <span id="card-label-k" class="text-[11px] font-semibold text-slate-500">Potassium (K)</span>
               <span id="stat-k-badge" class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">Optimal</span>
             </div>
             <p id="stat-k-val" class="text-lg font-bold text-emerald-700 mt-1">180 mg/kg</p>
@@ -569,10 +571,10 @@
 
           <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200/80">
             <div class="flex items-center justify-between">
-              <span class="text-[11px] font-semibold text-slate-500">Climate</span>
-              <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">Optimal</span>
+              <span id="card-label-climate" class="text-[11px] font-semibold text-slate-500">Climate</span>
+              <span id="stat-climate-badge" class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">Optimal</span>
             </div>
-            <p class="text-lg font-bold text-orange-700 mt-1">26.5°C</p>
+            <p id="stat-climate-val" class="text-lg font-bold text-orange-700 mt-1">26.5°C</p>
           </div>
         </div>
 
@@ -618,38 +620,38 @@
         <span id="modal-crop-match" class="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-600 text-white">94% Match</span>
       </div>
       <div class="border-t border-slate-100 my-3"></div>
-      <h4 class="text-xs font-bold text-slate-800 mb-2">Soil Nutrient Status vs Requirement</h4>
+      <h4 id="modal-nutrient-head" class="text-xs font-bold text-slate-800 mb-2">Soil Nutrient Status vs Requirement</h4>
       <div class="space-y-1.5 text-xs">
         <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg">
-          <span class="font-medium text-slate-600">Nitrogen (N)</span>
+          <span id="modal-lbl-n" class="font-medium text-slate-600">Nitrogen (N)</span>
           <span id="modal-n-status" class="font-bold text-emerald-700">85 mg/kg (Optimal)</span>
         </div>
         <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg">
-          <span class="font-medium text-slate-600">Phosphorus (P)</span>
+          <span id="modal-lbl-p" class="font-medium text-slate-600">Phosphorus (P)</span>
           <span id="modal-p-status" class="font-bold text-amber-700">38 mg/kg (Slight Deficit)</span>
         </div>
         <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg">
-          <span class="font-medium text-slate-600">Potassium (K)</span>
+          <span id="modal-lbl-k" class="font-medium text-slate-600">Potassium (K)</span>
           <span id="modal-k-status" class="font-bold text-emerald-700">180 mg/kg (Optimal Buffer)</span>
         </div>
         <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg">
-          <span class="font-medium text-slate-600">Soil Reaction (pH)</span>
+          <span id="modal-lbl-ph" class="font-medium text-slate-600">Soil Reaction (pH)</span>
           <span id="modal-ph-status" class="font-bold text-purple-700">6.80 pH (Optimal Range)</span>
         </div>
         <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg">
-          <span class="font-medium text-slate-600">Root Moisture</span>
+          <span id="modal-lbl-moist" class="font-medium text-slate-600">Root Moisture</span>
           <span id="modal-moist-status" class="font-bold text-sky-700">62.0% (Optimal)</span>
         </div>
       </div>
       <div class="border-t border-slate-100 my-3"></div>
       <h4 class="text-xs font-bold text-teal-800 mb-1.5 flex items-center gap-1.5">
         <svg class="w-4 h-4 text-teal-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-        Targeted Fertilizer & Soil Advisory
+        <span id="modal-advice-head">Targeted Fertilizer & Soil Advisory</span>
       </h4>
       <div id="modal-advice-box" class="bg-teal-50/70 border border-teal-200 rounded-xl p-3 text-xs text-teal-950 space-y-1.5">
       </div>
-      <button onclick="closeCropModalDirect()" class="w-full mt-4 py-2.5 bg-emerald-700 text-white rounded-xl font-bold text-xs shadow hover:bg-emerald-800 transition">
-        Back to Dashboard / वापस जाएं
+      <button id="modal-close-btn" onclick="closeCropModalDirect()" class="w-full mt-4 py-2.5 bg-emerald-700 text-white rounded-xl font-bold text-xs shadow hover:bg-emerald-800 transition">
+        Back to Dashboard
       </button>
     </div>
   </div>
@@ -658,83 +660,141 @@
     let currentTab = 0;
     let currentLocale = 'en';
     let currentSample = 'early';
+    let currentScenario = 'optimal';
+    let currentCropModal = 'Wheat';
 
     const cropDatabase = {
       'Wheat': {
-        name: 'Wheat (गेहूँ)',
-        season: 'Rabi Season • High Suitability',
-        match: '94% Match',
-        n: '85 mg/kg (Optimal)',
-        p: '38 mg/kg (Slight Deficit)',
-        k: '180 mg/kg (Optimal Buffer)',
-        ph: '6.80 pH (Optimal Range)',
-        moist: '62.0% (Optimal)',
-        advice: [
+        name_en: 'Wheat (गेहूँ)',
+        name_hi: 'गेहूँ (Wheat)',
+        season_en: 'Rabi Season • High Suitability',
+        season_hi: 'रबी सीजन • उच्च उपयुक्तता',
+        match_en: '94% Match',
+        match_hi: '94% अनुकूलता',
+        n_en: '85 mg/kg (Optimal)',
+        n_hi: '85 mg/kg (इष्टतम)',
+        p_en: '38 mg/kg (Slight Deficit)',
+        p_hi: '38 mg/kg (हल्की कमी)',
+        k_en: '180 mg/kg (Optimal Buffer)',
+        k_hi: '180 mg/kg (उत्कृष्ट स्तर)',
+        ph_en: '6.80 pH (Optimal Range)',
+        ph_hi: '6.80 pH (इष्टतम सीमा)',
+        moist_en: '62.0% (Optimal)',
+        moist_hi: '62.0% (इष्टतम)',
+        advice_en: [
           'Nitrogen: Balanced at 85 mg/kg. Plan split application: 35 kg/acre urea at first crown-root initiation irrigation (21 days).',
           'Phosphorus: Slight deficit (38 vs 42 mg/kg). Apply 20 kg/acre DAP during secondary tillage as basal nutrition.',
           'Potassium & pH: Excellent root-zone retention. No lime or gypsum amendment required.'
+        ],
+        advice_hi: [
+          'नाइट्रोजन: 85 mg/kg पर संतुलित। पहली सिंचाई (CRI अवस्था, 21 दिन) पर 35 किग्रा/एकड़ यूरिया टॉप-ड्रेसिंग करें।',
+          'फास्फोरस: हल्की कमी (38 vs 42 mg/kg)। बुवाई पूर्व द्वितीयक जुताई में 20 किग्रा/एकड़ DAP बेसल खुराक दें।',
+          'पोटेशियम एवं पीएच: जड़ क्षेत्र में पोषक प्रतिधारण उत्कृष्ट। चूना अथवा जिप्सम की आवश्यकता नहीं है।'
         ]
       },
       'Maize': {
-        name: 'Maize (मक्का)',
-        season: 'Kharif Season • High Suitability',
-        match: '86% Match',
-        n: '85 mg/kg (Optimal)',
-        p: '38 mg/kg (Optimal)',
-        k: '180 mg/kg (High Buffer)',
-        ph: '6.80 pH (Optimal)',
-        moist: '62.0% (Optimal)',
-        advice: [
+        name_en: 'Maize (मक्का)',
+        name_hi: 'मक्का (Maize)',
+        season_en: 'Kharif Season • High Suitability',
+        season_hi: 'खरीफ सीजन • उच्च उपयुक्तता',
+        match_en: '86% Match',
+        match_hi: '86% अनुकूलता',
+        n_en: '85 mg/kg (Optimal)',
+        n_hi: '85 mg/kg (इष्टतम)',
+        p_en: '38 mg/kg (Optimal)',
+        p_hi: '38 mg/kg (संतुलित)',
+        k_en: '180 mg/kg (High Buffer)',
+        k_hi: '180 mg/kg (उच्च बफर)',
+        ph_en: '6.80 pH (Optimal)',
+        ph_hi: '6.80 pH (इष्टतम)',
+        moist_en: '62.0% (Optimal)',
+        moist_hi: '62.0% (इष्टतम)',
+        advice_en: [
           'Nitrogen: High demand crop; current 85 mg/kg provides strong start. Side-dress with 30 kg urea at knee-high stage.',
           'Phosphorus: 38 mg/kg meets maize seedling demand for vigorous root expansion.',
           'Moisture: Maintain well-drained conditions; avoid standing water around root crowns.'
+        ],
+        advice_hi: [
+          'नाइट्रोजन: अधिक पोषक तत्व चाहने वाली फसल; 85 mg/kg मजबूत शुरुआत देता है। घुटने की ऊंचाई पर 30 किग्रा यूरिया दें।',
+          'फास्फोरस: 38 mg/kg अंकुरण और जड़ प्रसार हेतु पर्याप्त है।',
+          'नमी: जल निकासी का उचित प्रबंध रखें; जड़ क्षेत्र में पानी का भराव न होने दें।'
         ]
       },
       'Chickpea': {
-        name: 'Chickpea (चना)',
-        season: 'Rabi Season • Moderate Suitability',
-        match: '78% Match',
-        n: '85 mg/kg (Excess N)',
-        p: '38 mg/kg (Deficit)',
-        k: '180 mg/kg (High Buffer)',
-        ph: '6.80 pH (Optimal)',
-        moist: '62.0% (Moderate High)',
-        advice: [
+        name_en: 'Chickpea (चना)',
+        name_hi: 'चना (Chickpea)',
+        season_en: 'Rabi Season • Moderate Suitability',
+        season_hi: 'रबी सीजन • मध्यम उपयुक्तता',
+        match_en: '78% Match',
+        match_hi: '78% अनुकूलता',
+        n_en: '85 mg/kg (Excess N)',
+        n_hi: '85 mg/kg (अतिरिक्त नाइट्रोजन)',
+        p_en: '38 mg/kg (Deficit)',
+        p_hi: '38 mg/kg (कमी)',
+        k_en: '180 mg/kg (High Buffer)',
+        k_hi: '180 mg/kg (उच्च स्तर)',
+        ph_en: '6.80 pH (Optimal)',
+        ph_hi: '6.80 pH (इष्टतम)',
+        moist_en: '62.0% (Moderate High)',
+        moist_hi: '62.0% (मध्यम उच्च)',
+        advice_en: [
           'Nitrogen Caution: Soil nitrogen is relatively high (85 mg/kg). Omit basal urea to prevent excessive vegetative lodging.',
           'Phosphorus Deficit: Chickpea demands high P for nodulation. Apply 30 kg/acre Single Super Phosphate (SSP).',
           'Biological Fixation: Symbiotic rhizobia will naturally enrich plot nitrogen for subsequent crop cycles.'
+        ],
+        advice_hi: [
+          'नाइट्रोजन सावधानी: मिट्टी में नाइट्रोजन अधिक (85 mg/kg) है। अत्यधिक वानस्पतिक फैलाव रोकने हेतु यूरिया न दें।',
+          'फास्फोरस कमी: चना में ग्रंथि निर्माण हेतु उच्च फास्फोरस जरूरी है। 30 किग्रा/एकड़ SSP (सिंगल सुपर फास्फेट) दें।',
+          'जैविक स्थिरीकरण: सहजीवी राइजोबियम अगली फसल हेतु खेत की नाइट्रोजन उर्वरता को प्राकृतिक रूप से बढ़ाएंगे।'
         ]
       },
       'Cotton': {
-        name: 'Cotton (कपास)',
-        season: 'Kharif Season • High Confidence',
-        match: '96% Match',
-        n: '85 mg/kg (Slight Deficit)',
-        p: '38 mg/kg (Optimal)',
-        k: '180 mg/kg (Optimal High)',
-        ph: '6.80 pH (Optimal)',
-        moist: '62.0% (Optimal)',
-        advice: [
+        name_en: 'Cotton (कपास)',
+        name_hi: 'कपास (Cotton)',
+        season_en: 'Kharif Season • High Confidence',
+        season_hi: 'खरीफ सीजन • उच्च उपयुक्तता',
+        match_en: '96% Match',
+        match_hi: '96% अनुकूलता',
+        n_en: '85 mg/kg (Slight Deficit)',
+        n_hi: '85 mg/kg (हल्की कमी)',
+        p_en: '38 mg/kg (Optimal)',
+        p_hi: '38 mg/kg (इष्टतम)',
+        k_en: '180 mg/kg (Optimal High)',
+        k_hi: '180 mg/kg (उच्चतम स्तर)',
+        ph_en: '6.80 pH (Optimal)',
+        ph_hi: '6.80 pH (इष्टतम)',
+        moist_en: '62.0% (Optimal)',
+        moist_hi: '62.0% (इष्टतम)',
+        advice_en: [
           'Potassium Synergy: High potassium (180 mg/kg) directly drives superior boll size and fiber strength.',
           'Nitrogen: Top-dress with 25 kg/acre urea during flowering and boll formation.',
           'Sub-surface tap roots will leverage current deep moisture reserves effectively.'
+        ],
+        advice_hi: [
+          'पोटेशियम लाभ: उच्च पोटेशियम (180 mg/kg) सीधे टिंडे के विकास और रेशे की मजबूती को बढ़ाता है।',
+          'नाइट्रोजन: फूल आने और टिंडे बनने के समय 25 किग्रा/एकड़ यूरिया का छिड़काव करें।',
+          'गहरी मूसला जड़ें उपसतही नमी के वर्तमान भंडार का सर्वोत्तम उपयोग करेंगी।'
         ]
       }
     };
 
     function openCropModal(cropName) {
+      currentCropModal = cropName;
       const data = cropDatabase[cropName] || cropDatabase['Wheat'];
-      document.getElementById('modal-crop-name').innerText = data.name;
-      document.getElementById('modal-crop-season').innerText = data.season;
-      document.getElementById('modal-crop-match').innerText = data.match;
-      document.getElementById('modal-n-status').innerText = data.n;
-      document.getElementById('modal-p-status').innerText = data.p;
-      document.getElementById('modal-k-status').innerText = data.k;
-      document.getElementById('modal-ph-status').innerText = data.ph;
-      document.getElementById('modal-moist-status').innerText = data.moist;
+      const isHi = (currentLocale === 'hi');
 
+      document.getElementById('modal-crop-name').innerText = isHi ? data.name_hi : data.name_en;
+      document.getElementById('modal-crop-season').innerText = isHi ? data.season_hi : data.season_en;
+      document.getElementById('modal-crop-match').innerText = isHi ? data.match_hi : data.match_en;
+      document.getElementById('modal-n-status').innerText = isHi ? data.n_hi : data.n_en;
+      document.getElementById('modal-p-status').innerText = isHi ? data.p_hi : data.p_en;
+      document.getElementById('modal-k-status').innerText = isHi ? data.k_hi : data.k_en;
+      document.getElementById('modal-ph-status').innerText = isHi ? data.ph_hi : data.ph_en;
+      document.getElementById('modal-moist-status').innerText = isHi ? data.moist_hi : data.moist_en;
+
+      const adviceList = isHi ? data.advice_hi : data.advice_en;
       const adviceBox = document.getElementById('modal-advice-box');
-      adviceBox.innerHTML = data.advice.map(adv => `<p class="flex items-start gap-1.5"><span class="font-bold text-teal-600">•</span><span>${adv}</span></p>`).join('');
+      adviceBox.innerHTML = adviceList.map(adv => `<p class="flex items-start gap-1.5"><span class="font-bold text-teal-600">•</span><span>${adv}</span></p>`).join('');
 
       document.getElementById('crop-modal').classList.remove('hidden');
     }
@@ -759,11 +819,24 @@
         feelsLike: 'Feels like',
         humidity: 'Humidity',
         rainfall: 'Rainfall',
+        riskBadge: 'High Risk',
+        weatherLoc: 'Light rain shower • Jaipur, Rajasthan',
         riskBannerTitle: 'Agri Risk • High Risk',
         riskBannerText: 'Advisory: High humidity & favorable temperatures create elevated risk of fungal blight. Avoid foliage wetting.',
         windText: 'Wind: 11.9 km/h • Ambient Soil Monitoring',
+        cropRecTitle: 'Top Crop Recommendations',
+        cropRecSub: 'AI-Driven Field Suitability',
+        cropRecBtn: '🔄 Recalculate',
+        crop1Desc: 'Optimal soil pH (6.8) and balanced NPK ratio support vigorous tillering and high yield.',
+        cropTapHint: 'Tap for fertilizer plan & details ➔',
+        cropBaseline: 'Soil Baseline: N:85 P:42 K:180 | pH:6.8',
+        cropTarget: 'Target: High Harvest Yield',
         healthIndex: 'Soil Health Index',
         seeDetails: 'Soil & Farm',
+        gaugeSub: 'Multi-sensor weighted evaluation across pH, Moisture & NPK.',
+        homeMoistLbl: 'Moisture',
+        homePhLbl: 'Soil pH',
+        homeNLbl: 'Nitrogen',
         farmersNews: 'Farmers News',
         news1Head: 'Kharif Water Management: Can Farmers Save More Water?',
         news1Time: '2 days ago • Water Conservation',
@@ -773,7 +846,61 @@
         nav1: 'Scan',
         nav2: 'Yield',
         nav3: 'Ask AI',
-        nav4: 'Soil & Farm'
+        nav4: 'Soil & Farm',
+        // Tab 2 Scan
+        scanInst: 'Align diseased crop leaf inside viewfinder',
+        sampleTitle: 'Or test with sample leaf:',
+        btnEarly: '🌱 Tomato Early Blight',
+        btnHealthy: '🌾 Healthy Wheat',
+        btnLate: '🥔 Potato Late Blight',
+        btnCurl: '🌿 Cotton Leaf Curl',
+        diagTitle: 'AI Diagnosis Result',
+        symptomHead: 'Symptoms',
+        treatHead: 'Recommended Treatment',
+        // Tab 3 Yield
+        yieldHeader: 'AI Crop Yield Prediction',
+        yieldSub: 'Prediction powered by multi-sensor NPK and soil telemetry',
+        cropSelectLabel: 'Select Target Crop',
+        farmSizeLabel: 'Farm Size',
+        predYieldLabel: 'Estimated Yield Potential',
+        yieldUnit: 'Quintals / Acre',
+        totalHarvestLabel: 'Total Harvest Estimate:',
+        optTipHead: 'Optimization Advisory',
+        optTipBody: 'Current Nitrogen (85 mg/kg) is balanced. Maintaining adequate top-dressing at 45 days after sowing will push yield up by +1.5 Q/Acre.',
+        // Tab 4 AI
+        chip0: 'Treat fungal blight?',
+        chip1: 'Fertilizer for soil pH?',
+        chip2: 'Moisture for sowing?',
+        chatWelcomeMsg: 'Hello! I am your Smart Soil AI Assistant. Ask me anything about crop diseases, soil health, or fertilizer schedules.',
+        chatPlaceholder: 'Ask in English or हिन्दी...',
+        // Tab 5 Soil & Farm
+        nodeStatusText: 'Connected • Telemetry Live',
+        scenOpt: '🌱 Optimal Soil',
+        scenDrought: '🔥 Drought Alert',
+        scenWaterlogged: '💧 Waterlogged',
+        trendTitle: '7-Day Soil Telemetry Trend',
+        trendSub: '7-Day Historical Sensor Trend',
+        trendAvgLabel: '7-Day Avg:',
+        trendMinLabel: 'Min:',
+        trendMaxLabel: 'Max:',
+        trendTodayLabel: 'Today',
+        trendFootnote: 'Active Metric: Moisture (नमी) • Multi-sensor IoT archive calibrated.',
+        cardLabelMoist: 'Moisture',
+        cardLabelPh: 'Soil pH',
+        cardLabelN: 'Nitrogen (N)',
+        cardLabelP: 'Phosphorus (P)',
+        cardLabelK: 'Potassium (K)',
+        cardLabelClimate: 'Climate',
+        statClimateBadge: 'Optimal',
+        // Modal
+        modalNutrientHead: 'Soil Nutrient Status vs Requirement',
+        modalLblN: 'Nitrogen (N)',
+        modalLblP: 'Phosphorus (P)',
+        modalLblK: 'Potassium (K)',
+        modalLblPh: 'Soil Reaction (pH)',
+        modalLblMoist: 'Root Moisture',
+        modalAdviceHead: 'Targeted Fertilizer & Soil Advisory',
+        modalCloseBtn: 'Back to Dashboard'
       },
       hi: {
         greeting: 'नमस्ते, Chaitanya Sharma',
@@ -784,11 +911,24 @@
         feelsLike: 'महसूस',
         humidity: 'नमी',
         rainfall: 'बारिश',
+        riskBadge: 'उच्च जोखिम',
+        weatherLoc: 'हल्की बारिश • जयपुर, राजस्थान',
         riskBannerTitle: 'कृषि जोखिम • उच्च जोखिम',
         riskBannerText: 'सलाह: उच्च आर्द्रता और अनुकूल तापमान के कारण फफूंद (Fungus/Blight) का खतरा अधिक है। पत्तियों को गीला रखने से बचें।',
         windText: 'हवा की गति: 11.9 km/h • मृदा एवं जलवायु निगरानी',
+        cropRecTitle: 'शीर्ष अनुशंसित फसलें',
+        cropRecSub: 'एआई-संचालित खेत उपयुक्तता',
+        cropRecBtn: '🔄 पुनः गणना',
+        crop1Desc: 'इष्टतम मिट्टी पीएच (6.8) और संतुलित NPK कल्ले फूटने और बंपर पैदावार में अत्यंत सहायक हैं।',
+        cropTapHint: 'उर्वरक योजना और विवरण हेतु टैप करें ➔',
+        cropBaseline: 'मृदा बेसलाइन: N:85 P:42 K:180 | pH:6.8',
+        cropTarget: 'लक्ष्य: अधिकतम पैदावार उत्पादन',
         healthIndex: 'मृदा स्वास्थ्य सूचकांक',
         seeDetails: 'मिट्टी/खेत',
+        gaugeSub: 'पीएच, नमी और NPK पर आधारित मल्टी-सेंसर भारित मूल्यांकन।',
+        homeMoistLbl: 'नमी',
+        homePhLbl: 'मृदा पीएच',
+        homeNLbl: 'नाइट्रोजन',
         farmersNews: 'किसान समाचार',
         news1Head: 'खरीफ जल प्रबंधन: क्या किसान अधिक पानी बचा सकते हैं?',
         news1Time: '2 दिन पहले • जल संरक्षण',
@@ -798,7 +938,61 @@
         nav1: 'स्कैन',
         nav2: 'उपज',
         nav3: 'एआई',
-        nav4: 'मिट्टी/खेत'
+        nav4: 'मिट्टी/खेत',
+        // Tab 2 Scan
+        scanInst: 'बीमार फसल की पत्ती को व्यूफाइंडर के अंदर रखें',
+        sampleTitle: 'या नमूना पत्ती से परीक्षण करें:',
+        btnEarly: '🌱 टमाटर अगेती झुलसा',
+        btnHealthy: '🌾 स्वस्थ गेहूँ पत्ती',
+        btnLate: '🥔 आलू पछेती झुलसा',
+        btnCurl: '🌿 कपास पत्ती मरोड़',
+        diagTitle: 'एआई निदान परिणाम',
+        symptomHead: 'रोग के लक्षण',
+        treatHead: 'अनुशंसित उपचार एवं उपाय',
+        // Tab 3 Yield
+        yieldHeader: 'एआई फसल उपज पूर्वानुमान',
+        yieldSub: 'मल्टी-सेंसर NPK और मिट्टी टेलीमेट्री द्वारा संचालित',
+        cropSelectLabel: 'लक्षित फसल चुनें',
+        farmSizeLabel: 'खेत का आकार',
+        predYieldLabel: 'अनुमानित संभावित उपज',
+        yieldUnit: 'क्विंटल / एकड़',
+        totalHarvestLabel: 'कुल अनुमानित उत्पादन:',
+        optTipHead: 'उपज सुधार सलाह',
+        optTipBody: 'वर्तमान नाइट्रोजन (85 mg/kg) संतुलित है। बुवाई के 45 दिन बाद यूरिया टॉप-ड्रेसिंग से उपज में +1.5 क्विंटल/एकड़ की वृद्धि संभव है।',
+        // Tab 4 AI
+        chip0: 'फफूंद रोग का उपचार?',
+        chip1: 'मिट्टी पीएच हेतु खाद?',
+        chip2: 'बुवाई हेतु नमी?',
+        chatWelcomeMsg: 'नमस्ते! मैं आपका स्मार्ट सॉइल एआई सहायक हूँ। फसल रोग, मिट्टी के स्वास्थ्य या खाद के बारे में कुछ भी पूछें।',
+        chatPlaceholder: 'अंग्रेजी या हिन्दी में पूछें...',
+        // Tab 5 Soil & Farm
+        nodeStatusText: 'कनेक्टेड • लाइव टेलीमेट्री डेटा',
+        scenOpt: '🌱 इष्टतम मिट्टी',
+        scenDrought: '🔥 सूखा चेतावनी',
+        scenWaterlogged: '💧 जलभराव चेतावनी',
+        trendTitle: '7-दिवसीय मिट्टी टेलीमेट्री रुझान',
+        trendSub: '7-दिवसीय ऐतिहासिक सेंसर रुझान',
+        trendAvgLabel: '7-दिन औसत:',
+        trendMinLabel: 'न्यूनतम:',
+        trendMaxLabel: 'अधिकतम:',
+        trendTodayLabel: 'आज',
+        trendFootnote: 'सक्रिय मीट्रिक: नमी (Moisture) • मल्टी-सेंसर IoT डेटा कैलिब्रेटेड।',
+        cardLabelMoist: 'मिट्टी की नमी',
+        cardLabelPh: 'मृदा पीएच (pH)',
+        cardLabelN: 'नाइट्रोजन (N)',
+        cardLabelP: 'फास्फोरस (P)',
+        cardLabelK: 'पोटेशियम (K)',
+        cardLabelClimate: 'जलवायु',
+        statClimateBadge: 'इष्टतम',
+        // Modal
+        modalNutrientHead: 'मिट्टी पोषक तत्व स्थिति बनाम आवश्यकता',
+        modalLblN: 'नाइट्रोजन (N)',
+        modalLblP: 'फास्फोरस (P)',
+        modalLblK: 'पोटेशियम (K)',
+        modalLblPh: 'मृदा पीएच (pH)',
+        modalLblMoist: 'जड़ क्षेत्र नमी (Moisture)',
+        modalAdviceHead: 'लक्षित उर्वरक एवं मृदा सुधार सलाह',
+        modalCloseBtn: 'डैशबोर्ड पर वापस जाएं'
       }
     };
 
@@ -825,86 +1019,204 @@
     function toggleLanguage(lang) {
       currentLocale = lang;
       const t = translations[lang];
-      document.getElementById('top-greeting').innerText = t.greeting;
-      document.getElementById('top-subtitle').innerText = t.welcome;
-      document.getElementById('hero-title').innerText = t.heroTitle;
-      document.getElementById('hero-sub').innerText = t.heroSub;
-      document.getElementById('hero-btn').innerText = t.heroBtn;
-      document.getElementById('stat-feels-label').innerText = t.feelsLike;
-      document.getElementById('stat-humidity-label').innerText = t.humidity;
-      document.getElementById('stat-rain-label').innerText = t.rainfall;
-      document.getElementById('risk-banner-title').innerText = t.riskBannerTitle;
-      document.getElementById('risk-banner-text').innerText = t.riskBannerText;
-      document.getElementById('wind-text').innerText = t.windText;
-      document.getElementById('health-index-title').innerText = t.healthIndex;
-      document.getElementById('see-details-btn').innerText = t.seeDetails;
-      document.getElementById('news-title').innerText = t.farmersNews;
-      document.getElementById('news-1-head').innerText = t.news1Head;
-      document.getElementById('news-1-time').innerText = t.news1Time;
-      document.getElementById('news-2-head').innerText = t.news2Head;
-      document.getElementById('news-2-time').innerText = t.news2Time;
+
+      // Tab 1 Home
+      if (document.getElementById('top-greeting')) document.getElementById('top-greeting').innerText = t.greeting;
+      if (document.getElementById('top-subtitle')) document.getElementById('top-subtitle').innerText = t.welcome;
+      if (document.getElementById('hero-title')) document.getElementById('hero-title').innerText = t.heroTitle;
+      if (document.getElementById('hero-sub')) document.getElementById('hero-sub').innerText = t.heroSub;
+      if (document.getElementById('hero-btn')) document.getElementById('hero-btn').innerText = t.heroBtn;
+      if (document.getElementById('stat-feels-label')) document.getElementById('stat-feels-label').innerText = t.feelsLike;
+      if (document.getElementById('stat-humidity-label')) document.getElementById('stat-humidity-label').innerText = t.humidity;
+      if (document.getElementById('stat-rain-label')) document.getElementById('stat-rain-label').innerText = t.rainfall;
+      if (document.getElementById('risk-badge')) document.getElementById('risk-badge').innerText = t.riskBadge;
+      if (document.getElementById('weather-location-text')) document.getElementById('weather-location-text').innerText = t.weatherLoc;
+      if (document.getElementById('risk-banner-title')) document.getElementById('risk-banner-title').innerText = t.riskBannerTitle;
+      if (document.getElementById('risk-banner-text')) document.getElementById('risk-banner-text').innerText = t.riskBannerText;
+      if (document.getElementById('wind-text')) document.getElementById('wind-text').innerText = t.windText;
+      if (document.getElementById('crop-rec-title')) document.getElementById('crop-rec-title').innerText = t.cropRecTitle;
+      if (document.getElementById('crop-rec-sub')) document.getElementById('crop-rec-sub').innerText = t.cropRecSub;
+      if (document.getElementById('crop-rec-btn')) document.getElementById('crop-rec-btn').innerText = t.cropRecBtn;
+      if (document.getElementById('crop-1-desc')) document.getElementById('crop-1-desc').innerText = t.crop1Desc;
+      document.querySelectorAll('.crop-tap-hint').forEach(el => el.innerText = t.cropTapHint);
+      if (document.getElementById('crop-baseline-text')) document.getElementById('crop-baseline-text').innerText = t.cropBaseline;
+      if (document.getElementById('crop-target-text')) document.getElementById('crop-target-text').innerText = t.cropTarget;
+      if (document.getElementById('health-index-title')) document.getElementById('health-index-title').innerText = t.healthIndex;
+      if (document.getElementById('see-details-btn')) document.getElementById('see-details-btn').innerText = t.seeDetails;
+      if (document.getElementById('gauge-sub')) document.getElementById('gauge-sub').innerText = t.gaugeSub;
+      if (document.getElementById('home-moist-lbl')) document.getElementById('home-moist-lbl').innerText = t.homeMoistLbl;
+      if (document.getElementById('home-ph-lbl')) document.getElementById('home-ph-lbl').innerText = t.homePhLbl;
+      if (document.getElementById('home-n-lbl')) document.getElementById('home-n-lbl').innerText = t.homeNLbl;
+      if (document.getElementById('news-title')) document.getElementById('news-title').innerText = t.farmersNews;
+      if (document.getElementById('news-1-head')) document.getElementById('news-1-head').innerText = t.news1Head;
+      if (document.getElementById('news-1-time')) document.getElementById('news-1-time').innerText = t.news1Time;
+      if (document.getElementById('news-2-head')) document.getElementById('news-2-head').innerText = t.news2Head;
+      if (document.getElementById('news-2-time')) document.getElementById('news-2-time').innerText = t.news2Time;
+
+      // Nav
       for (let i = 0; i < 5; i++) {
-        document.getElementById('nav-label-' + i).innerText = t['nav' + i];
+        const navEl = document.getElementById('nav-label-' + i);
+        if (navEl) navEl.innerText = t['nav' + i];
+      }
+
+      // Tab 2 Scan
+      if (document.getElementById('scan-inst')) document.getElementById('scan-inst').innerText = t.scanInst;
+      if (document.getElementById('sample-title')) document.getElementById('sample-title').innerText = t.sampleTitle;
+      if (document.getElementById('btn-early')) document.getElementById('btn-early').innerText = t.btnEarly;
+      if (document.getElementById('btn-healthy')) document.getElementById('btn-healthy').innerText = t.btnHealthy;
+      if (document.getElementById('btn-late')) document.getElementById('btn-late').innerText = t.btnLate;
+      if (document.getElementById('btn-curl')) document.getElementById('btn-curl').innerText = t.btnCurl;
+      if (document.getElementById('diag-title')) document.getElementById('diag-title').innerText = t.diagTitle;
+      if (document.getElementById('symptom-head')) document.getElementById('symptom-head').innerText = t.symptomHead;
+      if (document.getElementById('treat-head')) document.getElementById('treat-head').innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg> ${t.treatHead}`;
+
+      // Tab 3 Yield
+      if (document.getElementById('yield-header')) document.getElementById('yield-header').innerText = t.yieldHeader;
+      if (document.getElementById('yield-sub')) document.getElementById('yield-sub').innerText = t.yieldSub;
+      if (document.getElementById('crop-select-label')) document.getElementById('crop-select-label').innerText = t.cropSelectLabel;
+      if (document.getElementById('farm-size-label')) document.getElementById('farm-size-label').innerText = t.farmSizeLabel;
+      if (document.getElementById('pred-yield-label')) document.getElementById('pred-yield-label').innerText = t.predYieldLabel;
+      if (document.getElementById('yield-unit')) document.getElementById('yield-unit').innerText = t.yieldUnit;
+      if (document.getElementById('total-harvest-label')) document.getElementById('total-harvest-label').innerText = t.totalHarvestLabel;
+      if (document.getElementById('opt-tip-head')) document.getElementById('opt-tip-head').innerHTML = `<svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/></svg> ${t.optTipHead}`;
+      if (document.getElementById('opt-tip-body')) document.getElementById('opt-tip-body').innerText = t.optTipBody;
+
+      // Tab 4 AI
+      if (document.getElementById('chip-0')) document.getElementById('chip-0').innerText = t.chip0;
+      if (document.getElementById('chip-1')) document.getElementById('chip-1').innerText = t.chip1;
+      if (document.getElementById('chip-2')) document.getElementById('chip-2').innerText = t.chip2;
+      if (document.getElementById('chat-welcome-msg')) document.getElementById('chat-welcome-msg').innerText = t.chatWelcomeMsg;
+      if (document.getElementById('chat-input')) document.getElementById('chat-input').placeholder = t.chatPlaceholder;
+
+      // Tab 5 Soil & Farm
+      if (document.getElementById('node-status-text')) document.getElementById('node-status-text').innerText = t.nodeStatusText;
+      if (document.getElementById('scen-opt')) document.getElementById('scen-opt').innerText = t.scenOpt;
+      if (document.getElementById('scen-drought')) document.getElementById('scen-drought').innerText = t.scenDrought;
+      if (document.getElementById('scen-waterlogged')) document.getElementById('scen-waterlogged').innerText = t.scenWaterlogged;
+      if (document.getElementById('trend-title')) document.getElementById('trend-title').innerText = t.trendTitle;
+      if (document.getElementById('trend-sub')) document.getElementById('trend-sub').innerText = t.trendSub;
+      if (document.getElementById('trend-avg-label')) document.getElementById('trend-avg-label').innerText = t.trendAvgLabel;
+      if (document.getElementById('trend-min-label')) document.getElementById('trend-min-label').innerText = t.trendMinLabel;
+      if (document.getElementById('trend-max-label')) document.getElementById('trend-max-label').innerText = t.trendMaxLabel;
+      if (document.getElementById('trend-today-label')) document.getElementById('trend-today-label').innerText = t.trendTodayLabel;
+      if (document.getElementById('trend-footnote')) document.getElementById('trend-footnote').innerText = t.trendFootnote;
+      if (document.getElementById('card-label-moist')) document.getElementById('card-label-moist').innerText = t.cardLabelMoist;
+      if (document.getElementById('card-label-ph')) document.getElementById('card-label-ph').innerText = t.cardLabelPh;
+      if (document.getElementById('card-label-n')) document.getElementById('card-label-n').innerText = t.cardLabelN;
+      if (document.getElementById('card-label-p')) document.getElementById('card-label-p').innerText = t.cardLabelP;
+      if (document.getElementById('card-label-k')) document.getElementById('card-label-k').innerText = t.cardLabelK;
+      if (document.getElementById('card-label-climate')) document.getElementById('card-label-climate').innerText = t.cardLabelClimate;
+      if (document.getElementById('stat-climate-badge')) document.getElementById('stat-climate-badge').innerText = t.statClimateBadge;
+
+      // Modal
+      if (document.getElementById('modal-nutrient-head')) document.getElementById('modal-nutrient-head').innerText = t.modalNutrientHead;
+      if (document.getElementById('modal-lbl-n')) document.getElementById('modal-lbl-n').innerText = t.modalLblN;
+      if (document.getElementById('modal-lbl-p')) document.getElementById('modal-lbl-p').innerText = t.modalLblP;
+      if (document.getElementById('modal-lbl-k')) document.getElementById('modal-lbl-k').innerText = t.modalLblK;
+      if (document.getElementById('modal-lbl-ph')) document.getElementById('modal-lbl-ph').innerText = t.modalLblPh;
+      if (document.getElementById('modal-lbl-moist')) document.getElementById('modal-lbl-moist').innerText = t.modalLblMoist;
+      if (document.getElementById('modal-advice-head')) document.getElementById('modal-advice-head').innerText = t.modalAdviceHead;
+      if (document.getElementById('modal-close-btn')) document.getElementById('modal-close-btn').innerText = t.modalCloseBtn;
+
+      // Re-trigger dynamic handlers
+      setSample(currentSample);
+      switchScenario(currentScenario);
+      recalculateYield();
+      if (!document.getElementById('crop-modal').classList.contains('hidden')) {
+        openCropModal(currentCropModal);
       }
     }
 
     const sampleData = {
       early: {
-        name: 'Tomato Early Blight (Alternaria solani)',
-        sev: 'High Severity',
+        name_en: 'Tomato Early Blight (Alternaria solani)',
+        name_hi: 'टमाटर अगेती झुलसा (अल्टरनेरिया सोलानी)',
+        sev_en: 'High Severity',
+        sev_hi: 'उच्च गंभीरता',
         sevColor: 'bg-rose-100 text-rose-700',
         conf: 96.4,
-        symptoms: 'Concentric brown-black rings on lower leaves with yellow halo.',
-        treat: 'Apply Mancozeb 75% WP @ 2.5g/L or copper oxychloride. Ensure drip irrigation.'
+        symptoms_en: 'Concentric brown-black rings on lower leaves with yellow halo.',
+        symptoms_hi: 'निचली पत्तियों पर पीले घेरे के साथ संकेंद्रित भूरे-काले छल्ले।',
+        treat_en: 'Apply Mancozeb 75% WP @ 2.5g/L or copper oxychloride. Ensure drip irrigation to avoid leaf wetness.',
+        treat_hi: 'मैनकोजेब 75% WP @ 2.5 ग्राम/लीटर या कॉपर ऑक्सीक्लोराइड का छिड़काव करें। पत्तियों को गीला होने से बचाने हेतु ड्रिप सिंचाई अपनाएं।'
       },
       healthy: {
-        name: 'Healthy Wheat Leaf',
-        sev: 'Optimal (No Disease)',
+        name_en: 'Healthy Wheat Leaf',
+        name_hi: 'स्वस्थ गेहूँ की पत्ती',
+        sev_en: 'Optimal (No Disease)',
+        sev_hi: 'उत्कृष्ट (रोगमुक्त)',
         sevColor: 'bg-emerald-100 text-emerald-800',
         conf: 98.8,
-        symptoms: 'Vibrant green coloration, uniform venation, no pathogenic lesions.',
-        treat: 'Maintain balanced NPK fertilization and periodic soil moisture monitoring.'
+        symptoms_en: 'Vibrant green coloration, uniform venation, no pathogenic lesions.',
+        symptoms_hi: 'चमकदार हरा रंग, एकसमान शिराएं, कोई रोगजनक धब्बे या विकृति नहीं।',
+        treat_en: 'Maintain balanced NPK fertilization and periodic soil moisture monitoring.',
+        treat_hi: 'संतुलित NPK पोषण और समय पर मिट्टी की नमी की निगरानी जारी रखें।'
       },
       late: {
-        name: 'Potato Late Blight (Phytophthora)',
-        sev: 'Critical Severity',
+        name_en: 'Potato Late Blight (Phytophthora)',
+        name_hi: 'आलू पछेती झुलसा (फाइटोफ्थोरा)',
+        sev_en: 'Critical Severity',
+        sev_hi: 'गंभीर संकट स्तर',
         sevColor: 'bg-pink-100 text-pink-700',
         conf: 94.1,
-        symptoms: 'Water-soaked dark lesions near leaf margins with white mildew.',
-        treat: 'Foliar spray of Metalaxyl-Mancozeb @ 2.0g/L immediately. Improve field drainage.'
+        symptoms_en: 'Water-soaked dark lesions near leaf margins with white mildew.',
+        symptoms_hi: 'पत्ती के किनारों पर सफेद फफूंद के साथ जल-युक्त काले-भूरे धब्बे।',
+        treat_en: 'Foliar spray of Metalaxyl-Mancozeb @ 2.0g/L immediately. Improve field drainage.',
+        treat_hi: 'तत्काल मेटालैक्सिल-मैनकोजेब @ 2.0 ग्राम/लीटर का पर्णीय छिड़काव करें। खेत में जल निकासी सुधारें।'
       },
       curl: {
-        name: 'Cotton Leaf Curl Virus (CLCuV)',
-        sev: 'Moderate Severity',
+        name_en: 'Cotton Leaf Curl Virus (CLCuV)',
+        name_hi: 'कपास पत्ती मरोड़ विषाणु (CLCuV)',
+        sev_en: 'Moderate Severity',
+        sev_hi: 'मध्यम गंभीरता',
         sevColor: 'bg-amber-100 text-amber-700',
         conf: 91.7,
-        symptoms: 'Upward leaf curling, thickening of veins, and enations.',
-        treat: 'Control whitefly vectors using Diafenthiuron 50% WP @ 1g/L. Remove weed hosts.'
+        symptoms_en: 'Upward leaf curling, thickening of veins, and enations.',
+        symptoms_hi: 'पत्तियों का ऊपर मुड़ना, नसों का मोटा होना और असामान्य उभार।',
+        treat_en: 'Control whitefly vectors using Diafenthiuron 50% WP @ 1g/L. Remove weed hosts.',
+        treat_hi: 'डायफेंथियूरॉन 50% WP @ 1 ग्राम/लीटर से सफेद मक्खी पर नियंत्रण करें। खरपतवार हटाएं।'
       }
     };
 
     function setSample(key) {
       currentSample = key;
       const data = sampleData[key];
+      const isHi = (currentLocale === 'hi');
+
       ['early', 'healthy', 'late', 'curl'].forEach(k => {
         const btn = document.getElementById('btn-' + k);
-        if (k === key) {
-          btn.className = 'text-left text-xs p-2 rounded-xl font-bold bg-[#0B6638] text-white shadow-xs';
-        } else {
-          btn.className = 'text-left text-xs p-2 rounded-xl font-bold bg-white text-slate-700 border border-slate-200';
+        if (btn) {
+          if (k === key) {
+            btn.className = 'text-left text-xs p-2 rounded-xl font-bold bg-[#0B6638] text-white shadow-xs';
+          } else {
+            btn.className = 'text-left text-xs p-2 rounded-xl font-bold bg-white text-slate-700 border border-slate-200';
+          }
         }
       });
-      document.getElementById('diag-name').innerText = data.name;
-      document.getElementById('diag-sev').innerText = data.sev;
-      document.getElementById('diag-sev').className = 'text-[10px] font-bold px-2 py-0.5 rounded-md ' + data.sevColor;
-      document.getElementById('diag-conf-text').innerText = 'AI Confidence: ' + data.conf + '%';
-      document.getElementById('diag-bar').style.width = data.conf + '%';
-      document.getElementById('symptom-text').innerText = data.symptoms;
-      document.getElementById('treat-text').innerText = data.treat;
+
+      if (document.getElementById('diag-name')) document.getElementById('diag-name').innerText = isHi ? data.name_hi : data.name_en;
+      if (document.getElementById('diag-sev')) {
+        document.getElementById('diag-sev').innerText = isHi ? data.sev_hi : data.sev_en;
+        document.getElementById('diag-sev').className = 'text-[10px] font-bold px-2 py-0.5 rounded-md ' + data.sevColor;
+      }
+      if (document.getElementById('diag-conf-text')) {
+        document.getElementById('diag-conf-text').innerText = (isHi ? 'एआई सटीकता: ' : 'AI Confidence: ') + data.conf + '%';
+      }
+      if (document.getElementById('diag-bar')) {
+        document.getElementById('diag-bar').style.width = data.conf + '%';
+      }
+      if (document.getElementById('symptom-text')) {
+        document.getElementById('symptom-text').innerText = isHi ? data.symptoms_hi : data.symptoms_en;
+      }
+      if (document.getElementById('treat-text')) {
+        document.getElementById('treat-text').innerText = isHi ? data.treat_hi : data.treat_en;
+      }
     }
 
     function updateAcres(val) {
-      document.getElementById('farm-size-val').innerText = parseFloat(val).toFixed(1) + ' Acres';
+      const isHi = (currentLocale === 'hi');
+      const unit = isHi ? ' एकड़' : ' Acres';
+      document.getElementById('farm-size-val').innerText = parseFloat(val).toFixed(1) + unit;
       recalculateYield();
     }
 
@@ -918,7 +1230,9 @@
       if (crop === 'mustard') baseYield = 12.0;
 
       document.getElementById('yield-num').innerText = baseYield.toFixed(1);
-      document.getElementById('total-harvest-val').innerText = (baseYield * acres).toFixed(1) + ' Q';
+      const isHi = (currentLocale === 'hi');
+      const unit = isHi ? ' क्विंटल' : ' Q';
+      document.getElementById('total-harvest-val').innerText = (baseYield * acres).toFixed(1) + unit;
     }
 
     function sendQuickPrompt(txt) {
@@ -941,14 +1255,24 @@
 
       // Add AI reply
       setTimeout(() => {
-        let answer = 'Based on live Smart Soil telemetry, your soil conditions are actively monitored. Maintain adequate irrigation and scheduled fertilization according to your crop calendar.';
+        const isHi = (currentLocale === 'hi');
+        let answer = isHi 
+          ? 'स्मार्ट सॉइल की लाइव टेलीमेट्री के अनुसार आपकी मिट्टी की स्थिति सक्रिय रूप से मॉनिटर की जा रही है। फसल कैलेंडर के अनुसार समय पर सिंचाई और खाद प्रबंधन जारी रखें।'
+          : 'Based on live Smart Soil telemetry, your soil conditions are actively monitored. Maintain adequate irrigation and scheduled fertilization according to your crop calendar.';
+        
         const lower = val.toLowerCase();
-        if (lower.includes('fungal') || lower.includes('blight')) {
-          answer = 'For fungal blight, apply Mancozeb 75% WP @ 2.5g/L immediately. In case of high humidity, avoid excessive irrigation and improve field aeration to reduce spore proliferation.';
-        } else if (lower.includes('ph') || lower.includes('fertilizer')) {
-          answer = 'For neutral soil pH around 6.5 - 7.0, apply DAP at basal stage followed by Urea in split applications. If soil is acidic (pH < 6.0), apply agricultural lime.';
-        } else if (lower.includes('moisture')) {
-          answer = 'Optimal moisture for most cereal crops is between 50% and 70%. If moisture drops below 35%, schedule an irrigation cycle within 24 hours.';
+        if (lower.includes('fungal') || lower.includes('blight') || lower.includes('फफूंद') || lower.includes('झुलसा')) {
+          answer = isHi
+            ? 'फफूंद रोग (Blight) के लिए तत्काल मैनकोजेब 75% WP @ 2.5 ग्राम/लीटर का छिड़काव करें। उच्च नमी के समय पत्तियों को गीला करने से बचें और खेत में हवा का संचार बनाए रखें।'
+            : 'For fungal blight, apply Mancozeb 75% WP @ 2.5g/L immediately. In case of high humidity, avoid excessive irrigation and improve field aeration to reduce spore proliferation.';
+        } else if (lower.includes('ph') || lower.includes('fertilizer') || lower.includes('खाद') || lower.includes('उर्वरक')) {
+          answer = isHi
+            ? '6.5 से 7.0 के सामान्य मिट्टी पीएच के लिए बुवाई पर DAP और बाद में यूरिया की संतुलित खुराक दें। यदि मिट्टी अम्लीय (pH < 6.0) हो, तो कृषि चूने का उपयोग करें।'
+            : 'For neutral soil pH around 6.5 - 7.0, apply DAP at basal stage followed by Urea in split applications. If soil is acidic (pH < 6.0), apply agricultural lime.';
+        } else if (lower.includes('moisture') || lower.includes('sowing') || lower.includes('नमी') || lower.includes('बुवाई')) {
+          answer = isHi
+            ? 'अधिकांश फसलों की बुवाई हेतु उपयुक्त मिट्टी नमी 50% से 70% के बीच होती है। यदि नमी 35% से कम हो, तो 24 घंटे के भीतर हल्की सिंचाई करें।'
+            : 'Optimal moisture for most cereal crops is between 50% and 70%. If moisture drops below 35%, schedule an irrigation cycle within 24 hours.';
         }
 
         const aiBubble = document.createElement('div');
@@ -963,76 +1287,118 @@
     }
 
     function switchScenario(sc) {
+      currentScenario = sc;
+      const isHi = (currentLocale === 'hi');
+
       if (sc === 'optimal') {
         document.getElementById('gauge-val').innerText = '94';
-        document.getElementById('gauge-cat').innerText = 'Optimal Health';
+        document.getElementById('gauge-cat').innerText = isHi ? 'उत्कृष्ट स्वास्थ्य' : 'Optimal Health';
         document.getElementById('gauge-cat').className = 'text-xs font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800';
         document.getElementById('gauge-path').setAttribute('stroke-dasharray', '94, 100');
         document.getElementById('stat-moist-val').innerText = '62.0 %';
-        document.getElementById('stat-moist-badge').innerText = 'Optimal';
+        document.getElementById('stat-moist-badge').innerText = isHi ? 'इष्टतम' : 'Optimal';
+        document.getElementById('stat-moist-badge').className = 'text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800';
         document.getElementById('stat-ph-val').innerText = '6.80 pH';
-        document.getElementById('stat-ph-badge').innerText = 'Optimal';
+        document.getElementById('stat-ph-badge').innerText = isHi ? 'इष्टतम' : 'Optimal';
+        document.getElementById('stat-ph-badge').className = 'text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800';
+        if (document.getElementById('trend-avg-val')) document.getElementById('trend-avg-val').innerText = '54.0%';
+        if (document.getElementById('trend-min-val')) document.getElementById('trend-min-val').innerText = '44.5%';
+        if (document.getElementById('trend-max-val')) document.getElementById('trend-max-val').innerText = '58.0%';
+        if (document.getElementById('trend-status-txt')) document.getElementById('trend-status-txt').innerText = isHi ? 'स्थिर' : 'Stable';
+        if (document.getElementById('trend-status')) document.getElementById('trend-status').className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 flex items-center gap-1';
       } else if (sc === 'drought') {
         document.getElementById('gauge-val').innerText = '42';
-        document.getElementById('gauge-cat').innerText = 'Severe Deficit';
+        document.getElementById('gauge-cat').innerText = isHi ? 'गंभीर सूखा / कमी' : 'Severe Deficit';
         document.getElementById('gauge-cat').className = 'text-xs font-bold px-2 py-0.5 rounded-md bg-rose-100 text-rose-800';
         document.getElementById('gauge-path').setAttribute('stroke-dasharray', '42, 100');
         document.getElementById('stat-moist-val').innerText = '18.0 %';
-        document.getElementById('stat-moist-badge').innerText = 'Critical Low';
+        document.getElementById('stat-moist-badge').innerText = isHi ? 'गंभीर न्यून' : 'Critical Low';
+        document.getElementById('stat-moist-badge').className = 'text-[9px] font-bold px-1.5 py-0.5 rounded bg-rose-100 text-rose-800';
         document.getElementById('stat-ph-val').innerText = '5.10 pH';
-        document.getElementById('stat-ph-badge').innerText = 'Acidic';
+        document.getElementById('stat-ph-badge').innerText = isHi ? 'अम्लीय' : 'Acidic';
+        document.getElementById('stat-ph-badge').className = 'text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800';
+        if (document.getElementById('trend-avg-val')) document.getElementById('trend-avg-val').innerText = '24.2%';
+        if (document.getElementById('trend-min-val')) document.getElementById('trend-min-val').innerText = '16.0%';
+        if (document.getElementById('trend-max-val')) document.getElementById('trend-max-val').innerText = '32.0%';
+        if (document.getElementById('trend-status-txt')) document.getElementById('trend-status-txt').innerText = isHi ? 'गिरावट' : 'Dropping';
+        if (document.getElementById('trend-status')) document.getElementById('trend-status').className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 flex items-center gap-1';
       } else if (sc === 'waterlogged') {
         document.getElementById('gauge-val').innerText = '56';
-        document.getElementById('gauge-cat').innerText = 'Moisture Saturated';
+        document.getElementById('gauge-cat').innerText = isHi ? 'अत्यधिक जलभराव' : 'Moisture Saturated';
         document.getElementById('gauge-cat').className = 'text-xs font-bold px-2 py-0.5 rounded-md bg-amber-100 text-amber-800';
         document.getElementById('gauge-path').setAttribute('stroke-dasharray', '56, 100');
         document.getElementById('stat-moist-val').innerText = '88.0 %';
-        document.getElementById('stat-moist-badge').innerText = 'Saturated';
+        document.getElementById('stat-moist-badge').innerText = isHi ? 'संतृप्त' : 'Saturated';
+        document.getElementById('stat-moist-badge').className = 'text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800';
         document.getElementById('stat-ph-val').innerText = '8.40 pH';
-        document.getElementById('stat-ph-badge').innerText = 'Alkaline';
+        document.getElementById('stat-ph-badge').innerText = isHi ? 'क्षारीय' : 'Alkaline';
+        document.getElementById('stat-ph-badge').className = 'text-[9px] font-bold px-1.5 py-0.5 rounded bg-purple-100 text-purple-800';
+        if (document.getElementById('trend-avg-val')) document.getElementById('trend-avg-val').innerText = '82.5%';
+        if (document.getElementById('trend-min-val')) document.getElementById('trend-min-val').innerText = '74.0%';
+        if (document.getElementById('trend-max-val')) document.getElementById('trend-max-val').innerText = '91.0%';
+        if (document.getElementById('trend-status-txt')) document.getElementById('trend-status-txt').innerText = isHi ? 'संतृप्त' : 'Saturated';
+        if (document.getElementById('trend-status')) document.getElementById('trend-status').className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 flex items-center gap-1';
       }
     }
-  
+
     function recalculateCrops() {
+      const isHi = (currentLocale === 'hi');
       const container = document.getElementById('crop-list-container');
+      const cottonTitle = isHi ? 'कपास (Cotton)' : 'Cotton (कपास)';
+      const cottonSeason = isHi ? 'खरीफ • उच्च अनुकूलता' : 'Kharif • High Confidence';
+      const cottonMatch = isHi ? '96% अनुकूलता' : '96% Match';
+      const cottonDesc = isHi 
+        ? 'सिम्युलेटेड समायोजन: उच्च पोटेशियम और उप-सतही नमी गहरी जड़ वाली फसलों के सर्वथा अनुकूल है।'
+        : 'Simulated adjustment: Elevated potassium & high moisture suitability favors deep-root fibrous crops.';
+      
+      const wheatTitle = isHi ? 'गेहूँ (Wheat)' : 'Wheat (गेहूँ)';
+      const wheatSeason = isHi ? 'रबी' : 'Rabi';
+      const wheatMatch = isHi ? '91% अनुकूलता' : '91% Match';
+
+      const riceTitle = isHi ? 'धान (Rice)' : 'Rice (चावल)';
+      const riceSeason = isHi ? 'खरीफ' : 'Kharif';
+      const riceMatch = isHi ? '88% अनुकूलता' : '88% Match';
+
       container.innerHTML = `
-        <div class="p-3 bg-emerald-50/80 rounded-xl border border-emerald-300 animate-pulse">
+        <div onclick="openCropModal('Cotton')" class="p-3 bg-emerald-50/80 rounded-xl border border-emerald-300 animate-pulse cursor-pointer hover:shadow-md transition">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
               <span class="w-6 h-6 rounded-full bg-emerald-600 text-white text-[11px] font-bold flex items-center justify-center">#1</span>
               <div>
-                <span class="font-bold text-xs text-slate-900">Cotton (कपास)</span>
-                <span class="text-[10px] text-slate-500 ml-1.5 font-medium">Kharif • High Confidence</span>
+                <span class="font-bold text-xs text-slate-900">${cottonTitle}</span>
+                <span class="text-[10px] text-slate-500 ml-1.5 font-medium">${cottonSeason}</span>
               </div>
             </div>
-            <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-600 text-white">96% Match</span>
+            <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-600 text-white">${cottonMatch}</span>
           </div>
           <div class="w-full bg-slate-200 h-1.5 rounded-full mt-2 overflow-hidden">
             <div class="bg-emerald-600 h-full rounded-full" style="width: 96%"></div>
           </div>
-          <p class="text-[11px] text-slate-600 mt-1.5">Simulated adjustment: Elevated potassium & high moisture suitability favors deep-root fibrous crops.</p>
+          <p class="text-[11px] text-slate-600 mt-1.5">${cottonDesc}</p>
+          <p class="crop-tap-hint text-[10px] text-emerald-700 font-semibold mt-1 text-right">${translations[currentLocale].cropTapHint}</p>
         </div>
-        <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+        <div onclick="openCropModal('Wheat')" class="p-2.5 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer hover:shadow-md transition">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
               <span class="w-5 h-5 rounded-full bg-slate-300 text-slate-700 text-[10px] font-bold flex items-center justify-center">#2</span>
-              <span class="font-bold text-xs text-slate-800">Wheat (गेहूँ)</span>
-              <span class="text-[10px] text-slate-500">Rabi</span>
+              <span class="font-bold text-xs text-slate-800">${wheatTitle}</span>
+              <span class="text-[10px] text-slate-500">${wheatSeason}</span>
             </div>
-            <span class="text-xs font-bold text-slate-700">91% Match</span>
+            <span class="text-xs font-bold text-slate-700">${wheatMatch}</span>
           </div>
           <div class="w-full bg-slate-200 h-1 rounded-full mt-1.5 overflow-hidden">
             <div class="bg-emerald-500 h-full rounded-full" style="width: 91%"></div>
           </div>
+          <p class="crop-tap-hint text-[10px] text-emerald-700 font-semibold mt-1 text-right">${translations[currentLocale].cropTapHint}</p>
         </div>
         <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
               <span class="w-5 h-5 rounded-full bg-slate-300 text-slate-700 text-[10px] font-bold flex items-center justify-center">#3</span>
-              <span class="font-bold text-xs text-slate-800">Rice (चावल)</span>
-              <span class="text-[10px] text-slate-500">Kharif</span>
+              <span class="font-bold text-xs text-slate-800">${riceTitle}</span>
+              <span class="text-[10px] text-slate-500">${riceSeason}</span>
             </div>
-            <span class="text-xs font-bold text-slate-700">88% Match</span>
+            <span class="text-xs font-bold text-slate-700">${riceMatch}</span>
           </div>
           <div class="w-full bg-slate-200 h-1 rounded-full mt-1.5 overflow-hidden">
             <div class="bg-emerald-500 h-full rounded-full" style="width: 88%"></div>
