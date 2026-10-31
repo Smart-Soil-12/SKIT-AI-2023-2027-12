@@ -1,4 +1,5 @@
 
+"""Crop prediction utilities for SmartSoil AI."""
 
 from pathlib import Path
 
@@ -11,8 +12,7 @@ ROOT = Path(__file__).resolve().parents[2]
 MODEL_PATH = ROOT / "models" / "crop_recommendation_model.joblib"
 
 FEATURES = [
-    "N", "P", "K", "temperature",
-    "humidity", "ph", "rainfall"
+    "N", "P", "K", "temperature", "humidity", "ph"
 ]
 
 FEATURE_RANGES = {
@@ -22,7 +22,6 @@ FEATURE_RANGES = {
     "temperature": (8.825675, 43.675493),
     "humidity": (14.258040, 99.981876),
     "ph": (3.504752, 9.935091),
-    "rainfall": (20.211267, 298.560117),
 }
 
 
@@ -62,13 +61,17 @@ def predict_crop(soil_data):
 
     model_data = joblib.load(MODEL_PATH)
     model = model_data["model"]
-    mapping = get_crop_mapping()
 
+    if list(model_data["feature_names"]) != FEATURES:
+        raise ValueError(
+            "Model feature configuration does not match prediction inputs."
+        )
+
+    mapping = get_crop_mapping()
     probabilities = model.predict_proba(values)[0]
-    classes = model.classes_
 
     ranked = sorted(
-        zip(classes, probabilities),
+        zip(model.classes_, probabilities),
         key=lambda item: item[1],
         reverse=True
     )
@@ -76,8 +79,6 @@ def predict_crop(soil_data):
     results = []
 
     for crop_id, score in ranked:
-        
-
         crop_id = int(crop_id)
 
         if crop_id not in mapping:
@@ -101,8 +102,7 @@ if __name__ == "__main__":
         "K": 43,
         "temperature": 20.9,
         "humidity": 82.0,
-        "ph": 6.5,
-        "rainfall": 202.9
+        "ph": 6.5
     }
 
     for result in predict_crop(sample):
