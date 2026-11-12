@@ -17,19 +17,25 @@ class HomeScreen extends StatelessWidget {
     required this.onNavigateToFarm,
   });
 
+  Future<void> _refreshHomeFeed(SmartSoilScope scope) async {
+    await scope.weather.loadWeather();
+    await Future.wait([
+      scope.dashboard.refreshData(),
+      scope.cropVm.loadRecommendations(
+        'farmer_chaitanya_01',
+        temperature: scope.weather.forecast.temperature,
+        humidity: scope.weather.forecast.humidity,
+      ),
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     final scope = SmartSoilScope.of(context);
-    final vm = scope.dashboard;
     final cropVm = scope.cropVm;
 
     return RefreshIndicator(
-      onRefresh: () async {
-        await Future.wait([
-          vm.refreshData(),
-          cropVm.loadRecommendations('farmer_chaitanya_01'),
-        ]);
-      },
+      onRefresh: () => _refreshHomeFeed(scope),
       child: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         children: [
@@ -40,7 +46,11 @@ class HomeScreen extends StatelessWidget {
           if (cropVm.result != null) ...[
             CropRecommendationCard(
               recommendationResult: cropVm.result!,
-              onRefresh: () => cropVm.loadRecommendations('farmer_chaitanya_01'),
+              onRefresh: () => cropVm.loadRecommendations(
+                'farmer_chaitanya_01',
+                temperature: scope.weather.forecast.temperature,
+                humidity: scope.weather.forecast.humidity,
+              ),
             ),
             const SizedBox(height: 16),
           ],
@@ -53,4 +63,3 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-

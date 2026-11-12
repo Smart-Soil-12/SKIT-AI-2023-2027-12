@@ -7,6 +7,7 @@ import '../../data/repositories/soil_telemetry_repository.dart';
 import '../../data/repositories/crop_recommendation_repository.dart';
 import '../../ui/dashboard/view_models/crop_recommendation_view_model.dart';
 import '../../ui/dashboard/view_models/dashboard_view_model.dart';
+import '../../ui/home/view_models/weather_view_model.dart';
 import '../../ui/scan/view_models/scan_view_model.dart';
 import '../../ui/yield/view_models/yield_view_model.dart';
 import '../../ui/ai_chat/view_models/ai_chat_view_model.dart';
@@ -14,8 +15,13 @@ import '../../ui/ai_chat/view_models/ai_chat_view_model.dart';
 /// Top-level state container providing pure Flutter reactivity & cross-team service injection.
 class SmartSoilAppState extends StatefulWidget {
   final Widget child;
+  final BackendApiClient? apiClientOverride;
 
-  const SmartSoilAppState({super.key, required this.child});
+  const SmartSoilAppState({
+    super.key,
+    required this.child,
+    this.apiClientOverride,
+  });
 
   @override
   State<SmartSoilAppState> createState() => _SmartSoilAppStateState();
@@ -31,6 +37,7 @@ class _SmartSoilAppStateState extends State<SmartSoilAppState> {
 
   late final DashboardViewModel dashboard;
   late final CropRecommendationViewModel cropVm;
+  late final WeatherViewModel weather;
   late final ScanViewModel scan;
   late final YieldViewModel yieldVm;
   late final AiChatViewModel chat;
@@ -39,7 +46,7 @@ class _SmartSoilAppStateState extends State<SmartSoilAppState> {
   void initState() {
     super.initState();
     language = LanguageProvider()..addListener(_onStateChanged);
-    backendClient = BackendApiClient();
+    backendClient = widget.apiClientOverride ?? BackendApiClient();
     telemetryRepo = SoilTelemetryRepository(apiClient: backendClient);
     cropRepo = CropRecommendationRepository(
       telemetryRepository: telemetryRepo,
@@ -51,11 +58,12 @@ class _SmartSoilAppStateState extends State<SmartSoilAppState> {
     dashboard = DashboardViewModel()..addListener(_onStateChanged);
     cropVm = CropRecommendationViewModel(repository: cropRepo)
       ..addListener(_onStateChanged);
+    weather = WeatherViewModel(apiClient: backendClient)
+      ..addListener(_onStateChanged);
     scan = ScanViewModel()..addListener(_onStateChanged);
     yieldVm = YieldViewModel()..addListener(_onStateChanged);
     chat = AiChatViewModel()..addListener(_onStateChanged);
   }
-
 
   void _onStateChanged() {
     if (mounted) setState(() {});
@@ -66,6 +74,7 @@ class _SmartSoilAppStateState extends State<SmartSoilAppState> {
     language.removeListener(_onStateChanged);
     dashboard.removeListener(_onStateChanged);
     cropVm.removeListener(_onStateChanged);
+    weather.removeListener(_onStateChanged);
     scan.removeListener(_onStateChanged);
     yieldVm.removeListener(_onStateChanged);
     chat.removeListener(_onStateChanged);
@@ -73,6 +82,7 @@ class _SmartSoilAppStateState extends State<SmartSoilAppState> {
     language.dispose();
     dashboard.dispose();
     cropVm.dispose();
+    weather.dispose();
     scan.dispose();
     yieldVm.dispose();
     chat.dispose();
@@ -91,6 +101,7 @@ class _SmartSoilAppStateState extends State<SmartSoilAppState> {
       mlEngine: mlEngine,
       dashboard: dashboard,
       cropVm: cropVm,
+      weather: weather,
       scan: scan,
       yieldVm: yieldVm,
       chat: chat,
@@ -110,6 +121,7 @@ class SmartSoilScope extends InheritedWidget {
 
   final DashboardViewModel dashboard;
   final CropRecommendationViewModel cropVm;
+  final WeatherViewModel weather;
   final ScanViewModel scan;
   final YieldViewModel yieldVm;
   final AiChatViewModel chat;
@@ -124,12 +136,12 @@ class SmartSoilScope extends InheritedWidget {
     required this.mlEngine,
     required this.dashboard,
     required this.cropVm,
+    required this.weather,
     required this.scan,
     required this.yieldVm,
     required this.chat,
     required super.child,
   });
-
 
   static SmartSoilScope of(BuildContext context) {
     final scope = context.dependOnInheritedWidgetOfExactType<SmartSoilScope>();

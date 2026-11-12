@@ -1,7 +1,7 @@
 /// Crop Recommendation Data Structures for Smart Soil
 /// Fulfills Form-1 Objective 3 ("Prediction of top 3 crops") and
 /// Form-2 Sprint 4 Task ("Prepare Flutter structures to receive & display crop recommendation").
-/// Aligns with backend/data/Crop_recommendation.csv and backend/src/encode_crop_labels.py.
+/// Aligns with backend/data/Crop_recommendation.csv and backend/src/api.py.
 
 class CropOptimalConditions {
   final double minN;
@@ -102,17 +102,40 @@ class CropRecommendationItem {
       };
 
   factory CropRecommendationItem.fromJson(Map<String, dynamic> json) {
+    // Support both FastAPI `/api/crops/predict` (`crop`, `confidence` 0..100)
+    // and rich client format (`crop_name`, `suitability_score` 0..1).
+    final rawName =
+        (json['crop_name'] ?? json['crop'])?.toString() ?? 'Unknown Crop';
+    final normalizedName = rawName.isEmpty
+        ? 'Unknown Crop'
+        : '${rawName[0].toUpperCase()}${rawName.substring(1)}';
+
+    double score = 0.0;
+    if (json['suitability_score'] is num) {
+      score = (json['suitability_score'] as num).toDouble();
+    } else if (json['confidence'] is num) {
+      score = ((json['confidence'] as num).toDouble() / 100.0).clamp(0.0, 1.0);
+    }
+
+    final derivedConfidence = score >= 0.85
+        ? 'High'
+        : score >= 0.65
+            ? 'Moderate'
+            : 'Low';
+
     return CropRecommendationItem(
-      cropName: json['crop_name'] as String? ?? 'Unknown Crop',
-      suitabilityScore: (json['suitability_score'] as num?)?.toDouble() ?? 0.0,
+      cropName: normalizedName,
+      suitabilityScore: score,
       season: json['season'] as String? ?? 'General',
-      confidenceLevel: json['confidence_level'] as String? ?? 'Moderate',
+      confidenceLevel: json['confidence_level'] as String? ?? derivedConfidence,
       agronomicHighlights: (json['agronomic_highlights'] as List<dynamic>?)
               ?.map((e) => e.toString())
               .toList() ??
           const [],
       optimalConditions: json['optimal_conditions'] != null
-          ? CropOptimalConditions.fromJson(json['optimal_conditions'] as Map<String, dynamic>)
+          ? CropOptimalConditions.fromJson(
+              json['optimal_conditions'] as Map<String, dynamic>,
+            )
           : const CropOptimalConditions(
               minN: 50,
               maxN: 120,
@@ -163,12 +186,15 @@ class CropRecommendationResult {
       generatedAt: json['generated_at'] != null
           ? DateTime.tryParse(json['generated_at'].toString()) ?? DateTime.now()
           : DateTime.now(),
-      soilParametersUsed: (json['soil_parameters_used'] as Map<String, dynamic>?)?.map(
+      soilParametersUsed: (json['soil_parameters_used'] as Map<String, dynamic>?)
+              ?.map(
             (k, v) => MapEntry(k, (v as num).toDouble()),
           ) ??
           {},
       recommendations: (json['recommendations'] as List<dynamic>?)
-              ?.map((r) => CropRecommendationItem.fromJson(r as Map<String, dynamic>))
+              ?.map(
+                (r) => CropRecommendationItem.fromJson(r as Map<String, dynamic>),
+              )
               .toList() ??
           const [],
     );
