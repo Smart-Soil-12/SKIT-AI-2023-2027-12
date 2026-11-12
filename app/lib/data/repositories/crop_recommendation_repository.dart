@@ -368,23 +368,81 @@ class CropRecommendationRepository {
     },
   ];
 
-  /// Generates top crop recommendations using the farmer's historical aggregated soil readings.
+  /// Builds optimal agronomic bounds from a catalog crop entry.
+  CropOptimalConditions _conditionsFromEntry(Map<String, dynamic> crop) {
+    final optTemp = (crop['opt_temp'] as double?) ?? 25.0;
+    final optHum = (crop['opt_humidity'] as double?) ?? 65.0;
+    final optRain = (crop['opt_rainfall'] as double?) ?? 120.0;
+    return CropOptimalConditions(
+      minN: (crop['opt_N'] as double) * 0.8,
+      maxN: (crop['opt_N'] as double) * 1.2,
+      minP: (crop['opt_P'] as double) * 0.8,
+      maxP: (crop['opt_P'] as double) * 1.2,
+      minK: (crop['opt_K'] as double) * 0.8,
+      maxK: (crop['opt_K'] as double) * 1.2,
+      minPh: (crop['opt_ph'] as double) - 0.5,
+      maxPh: (crop['opt_ph'] as double) + 0.5,
+      minTemp: (optTemp - 6.0).clamp(5.0, 40.0),
+      maxTemp: (optTemp + 6.0).clamp(10.0, 45.0),
+      minHumidity: (optHum - 15.0).clamp(15.0, 90.0),
+      maxHumidity: (optHum + 15.0).clamp(25.0, 100.0),
+      minRainfall: (optRain * 0.6).clamp(20.0, 250.0),
+      maxRainfall: (optRain * 1.4).clamp(50.0, 350.0),
+    );
+  }
+
+  /// Enriches sparse API items (e.g. FastAPI {crop, confidence}) with full 22-crop agronomy data.
+  CropRecommendationItem enrichWithKnowledgeBase(CropRecommendationItem item) {
+    final target = item.cropName.toLowerCase();
+    for (final crop in _referenceCrops) {
+      if ((crop['name'] as String).toLowerCase() == target) {
+        return CropRecommendationItem(
+          cropName: crop['name'] as String,
+          suitabilityScore: item.suitabilityScore,
+          season: item.season == 'General' ? crop['season'] as String : item.season,
+          confidenceLevel: item.confidenceLevel,
+          agronomicHighlights: item.agronomicHighlights.isEmpty
+              ? List<String>.from(crop['highlights'] as List)
+              : item.agronomicHighlights,
+          optimalConditions: _conditionsFromEntry(crop),
+        );
+      }
+    }
+    return item;
+  }
+
+  /// Generates top crop recommendations using aggregated soil readings and optional live weather.
   Future<CropRecommendationResult> getRecommendationsForFarmer(
     String farmerId, {
     int topK = 3,
+    double? temperature,
+    double? humidity,
   }) async {
-    // 1. Compute statistical average soil parameters across farmer's history
-    final soilProfile = telemetryRepository.computeAggregatedSoilProfile(farmerId);
+    // 1. Compute statistical average soil parameters across farmer history
+    final soilProfile = Map<String, double>.from(
+      telemetryRepository.computeAggregatedSoilProfile(farmerId),
+    );
+    if (temperature != null) soilProfile['temperature'] = temperature;
+    if (humidity != null) soilProfile['humidity'] = humidity;
 
     try {
-      // 2. Query cloud inference API if available
-      final cloudJson = await apiClient.fetchCropRecommendationsFromCloud(
+      // 2. Query Chetan FastAPI 6-feature endpoint (POST /api/crops/predict)
+      final cloudJson = await apiClient.predictCropsSixFeatures(
         farmerId: farmerId,
         soilFeatures: soilProfile,
       );
-      final result = CropRecommendationResult.fromJson(cloudJson);
-      _cachedRecommendation = result;
-      return result;
+      final rawResult = CropRecommendationResult.fromJson(cloudJson);
+      final enriched = CropRecommendationResult(
+        farmerId: rawResult.farmerId,
+        generatedAt: rawResult.generatedAt,
+        soilParametersUsed: rawResult.soilParametersUsed,
+        recommendations: rawResult.recommendations
+            .take(topK)
+            .map(enrichWithKnowledgeBase)
+            .toList(),
+      );
+      _cachedRecommendation = enriched;
+      return enriched;
     } catch (_) {
       // 3. Fallback to offline multi-parameter scoring engine
       final ranked = rankCropsLocally(soilProfile, topK);
@@ -404,11 +462,10 @@ class CropRecommendationRepository {
     Map<String, double> soil,
     int topK,
   ) {
-
     final n = soil['N'] ?? 80.0;
     final p = soil['P'] ?? 40.0;
     final k = soil['K'] ?? 150.0;
-    final ph = soil['pH'] ?? 6.8;
+    final ph = soil['pH'] ?? soil['ph'] ?? 6.8;
 
     final scoredList = <MapEntry<double, Map<String, dynamic>>>[];
 
@@ -418,14 +475,12 @@ class CropRecommendationRepository {
       final optK = crop['opt_K'] as double;
       final optPh = crop['opt_ph'] as double;
 
-      // Normalized Euclidean distance
       final distN = math.pow((n - optN) / 100.0, 2);
       final distP = math.pow((p - optP) / 50.0, 2);
       final distK = math.pow((k - optK) / 100.0, 2);
       final distPh = math.pow((ph - optPh) / 2.0, 2);
 
       final totalDist = math.sqrt(distN + distP + distK + distPh);
-      // Convert distance to normalized suitability percentage
       final score = (1.0 / (1.0 + totalDist)).clamp(0.40, 0.98);
 
       scoredList.add(MapEntry(score, crop));
@@ -442,22 +497,7 @@ class CropRecommendationRepository {
         season: crop['season'] as String,
         confidenceLevel: score >= 0.85 ? 'High' : 'Moderate',
         agronomicHighlights: List<String>.from(crop['highlights'] as List),
-        optimalConditions: CropOptimalConditions(
-          minN: (crop['opt_N'] as double) * 0.8,
-          maxN: (crop['opt_N'] as double) * 1.2,
-          minP: (crop['opt_P'] as double) * 0.8,
-          maxP: (crop['opt_P'] as double) * 1.2,
-          minK: (crop['opt_K'] as double) * 0.8,
-          maxK: (crop['opt_K'] as double) * 1.2,
-          minPh: (crop['opt_ph'] as double) - 0.5,
-          maxPh: (crop['opt_ph'] as double) + 0.5,
-          minTemp: 18.0,
-          maxTemp: 32.0,
-          minHumidity: 40.0,
-          maxHumidity: 85.0,
-          minRainfall: 60.0,
-          maxRainfall: 200.0,
-        ),
+        optimalConditions: _conditionsFromEntry(crop),
       );
     }).toList();
   }

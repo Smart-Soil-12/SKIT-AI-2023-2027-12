@@ -146,6 +146,29 @@
       img.src = dataUrl;
     }
 
+
+    async function syncWeatherApi() {
+      const badge = document.getElementById('weather-api-badge');
+      if (badge) badge.innerText = 'Syncing...';
+      try {
+        const res = await fetch('http://127.0.0.1:8000/api/weather/current?latitude=26.9124&longitude=75.7873', { signal: AbortSignal.timeout(2500) });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        document.getElementById('weather-temp-val').innerText = Number(data.temperature).toFixed(1) + '°C';
+        document.getElementById('weather-hum-val').innerText = Math.round(data.humidity) + '%';
+        document.getElementById('weather-rain-val').innerText = Number(data.rainfall).toFixed(2) + ' mm';
+        if (badge) {
+          badge.innerText = 'Live FastAPI';
+          badge.className = 'px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-semibold';
+        }
+      } catch (_) {
+        if (badge) {
+          badge.innerText = 'Offline Sync';
+          badge.className = 'px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-semibold';
+        }
+      }
+    }
+
   </script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap');
@@ -241,7 +264,7 @@
               </div>
               <div>
                 <div class="flex items-center gap-2">
-                  <span class="text-xl font-extrabold text-slate-900">23.4°C</span>
+                  <span id="weather-temp-val" class="text-xl font-extrabold text-slate-900">23.4°C</span>
                   <span id="risk-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-rose-100 text-rose-700">High Risk</span>
                 </div>
                 <p id="weather-location-text" class="text-[11px] text-slate-500">Light rain shower • Jaipur, Rajasthan</p>
@@ -257,11 +280,11 @@
             </div>
             <div class="border-x border-slate-200">
               <p id="stat-humidity-label" class="text-[10px] text-slate-500 font-medium">Humidity</p>
-              <p class="text-xs font-bold text-slate-900 mt-0.5">91%</p>
+              <p id="weather-hum-val" class="text-xs font-bold text-slate-900 mt-0.5">91%</p>
             </div>
             <div>
               <p id="stat-rain-label" class="text-[10px] text-slate-500 font-medium">Rainfall</p>
-              <p class="text-xs font-bold text-slate-900 mt-0.5">0.52 mm</p>
+              <p id="weather-rain-val" class="text-xs font-bold text-slate-900 mt-0.5">0.52 mm</p>
             </div>
           </div>
 
@@ -276,9 +299,12 @@
             </p>
           </div>
 
-          <div class="mt-2.5 flex items-center gap-1.5 text-[10px] text-slate-400">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-            <span id="wind-text">Wind: 11.9 km/h • Ambient Soil Monitoring</span>
+          <div class="mt-2.5 flex items-center justify-between text-[10px] text-slate-400">
+            <div class="flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              <span id="wind-text">Wind: 11.9 km/h • Ambient Soil Monitoring</span>
+            </div>
+            <button onclick="syncWeatherApi()" id="weather-api-badge" class="px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-semibold hover:bg-emerald-50 hover:text-emerald-700 transition">FastAPI Sync</button>
           </div>
         </div>
 
@@ -1618,6 +1644,29 @@
         }
       };
       img.src = dataUrl;
+    }
+
+
+    async function syncWeatherApi() {
+      const badge = document.getElementById('weather-api-badge');
+      if (badge) badge.innerText = 'Syncing...';
+      try {
+        const res = await fetch('http://127.0.0.1:8000/api/weather/current?latitude=26.9124&longitude=75.7873', { signal: AbortSignal.timeout(2500) });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        document.getElementById('weather-temp-val').innerText = Number(data.temperature).toFixed(1) + '°C';
+        document.getElementById('weather-hum-val').innerText = Math.round(data.humidity) + '%';
+        document.getElementById('weather-rain-val').innerText = Number(data.rainfall).toFixed(2) + ' mm';
+        if (badge) {
+          badge.innerText = 'Live FastAPI';
+          badge.className = 'px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-semibold';
+        }
+      } catch (_) {
+        if (badge) {
+          badge.innerText = 'Offline Sync';
+          badge.className = 'px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-semibold';
+        }
+      }
     }
 
   </script>

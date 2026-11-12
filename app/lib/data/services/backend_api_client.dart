@@ -1,13 +1,42 @@
 import 'dart:async';
+import 'dart:convert';
 import '../models/cloud_soil_record_model.dart';
+import '../models/weather_forecast_model.dart';
+import 'http_transport.dart';
+
+/// Custom HTTP execution callback for dependency injection in tests and live builds.
+typedef ApiHttpExecutor = Future<String?> Function({
+  required String method,
+  required Uri uri,
+  Map<String, String>? headers,
+  String? body,
+  Duration timeout,
+});
 
 /// HTTP Client that interacts with Chetan Singh's FastAPI / Firebase Cloud Backend.
-/// Matches endpoints defined in backend/src/firebase_service.py and backend/src/firebase_auth.py.
+/// Matches endpoints defined in `backend/src/api.py`, `backend/src/firebase_service.py`,
+/// `backend/src/weather_service.py`, and `backend/src/ml/predict_crop.py`.
 class BackendApiClient {
   final String baseUrl;
+  final bool enableLiveNetwork;
+  final ApiHttpExecutor _httpExecutor;
   String? _authToken;
 
-  BackendApiClient({this.baseUrl = 'http://10.0.2.2:8000'});
+  /// Exact 6-feature ML bounds from `backend/src/ml/predict_crop.py` (`FEATURE_RANGES`).
+  static const Map<String, List<double>> mlFeatureRanges = {
+    'N': [0.0, 140.0],
+    'P': [5.0, 145.0],
+    'K': [5.0, 205.0],
+    'temperature': [8.825675, 43.675493],
+    'humidity': [14.258040, 99.981876],
+    'ph': [3.504752, 9.935091],
+  };
+
+  BackendApiClient({
+    this.baseUrl = 'http://10.0.2.2:8000',
+    this.enableLiveNetwork = false,
+    ApiHttpExecutor? httpExecutor,
+  }) : _httpExecutor = httpExecutor ?? executeHttpRequest;
 
   void setAuthToken(String token) {
     _authToken = token;
@@ -18,14 +47,165 @@ class BackendApiClient {
         if (_authToken != null) 'Authorization': 'Bearer $_authToken',
       };
 
+  Future<String?> _performRequest(
+    String method,
+    String path, {
+    Map<String, String>? queryParams,
+    Map<String, dynamic>? body,
+  }) async {
+    if (!enableLiveNetwork && _httpExecutor == executeHttpRequest) {
+      return null;
+    }
+    final parsed = Uri.parse(baseUrl);
+    final uri = Uri(
+      scheme: parsed.scheme,
+      host: parsed.host,
+      port: parsed.hasPort ? parsed.port : null,
+      path: path,
+      queryParameters: queryParams,
+    );
+    return _httpExecutor(
+      method: method,
+      uri: uri,
+      headers: headers,
+      body: body != null ? jsonEncode(body) : null,
+    );
+  }
+
+  /// Validates and clamps the 6 inputs required by FastAPI `CropPredictionRequest`.
+  Map<String, double> buildSixFeaturePayload(Map<String, double> soilFeatures) {
+    double clampFeature(String key, double fallback) {
+      final range = mlFeatureRanges[key]!;
+      final raw = soilFeatures[key] ??
+          (key == 'ph' ? soilFeatures['pH'] : null) ??
+          fallback;
+      return raw.clamp(range[0], range[1]).toDouble();
+    }
+
+    return {
+      'N': clampFeature('N', 80.0),
+      'P': clampFeature('P', 40.0),
+      'K': clampFeature('K', 45.0),
+      'temperature': clampFeature('temperature', 25.0),
+      'humidity': clampFeature('humidity', 65.0),
+      'ph': clampFeature('ph', 6.8),
+    };
+  }
+
+  /// Queries `GET /health` on `backend/src/api.py`.
+  Future<bool> checkHealth() async {
+    final raw = await _performRequest('GET', '/health');
+    if (raw == null) return false;
+    try {
+      final decoded = jsonDecode(raw) as Map<String, dynamic>;
+      return decoded['status'] == 'ok';
+    } catch (_) {
+      return false;
+    }
+  }
+
+  /// Queries `GET /api/weather/current` on `backend/src/api.py`.
+  /// Falls back cleanly to Jaipur initial telemetry if the backend is offline.
+  Future<WeatherForecastModel> fetchCurrentWeather({
+    double latitude = 26.9124,
+    double longitude = 75.7873,
+  }) async {
+    final raw = await _performRequest(
+      'GET',
+      '/api/weather/current',
+      queryParams: {
+        'latitude': latitude.toString(),
+        'longitude': longitude.toString(),
+      },
+    );
+
+    if (raw != null) {
+      try {
+        final decoded = jsonDecode(raw) as Map<String, dynamic>;
+        return WeatherForecastModel.fromJson(decoded, isFromLiveApi: true);
+      } catch (_) {
+        // Fallback if malformed
+      }
+    }
+
+    await Future.delayed(const Duration(milliseconds: 120));
+    return WeatherForecastModel.initialDefault();
+  }
+
+  /// Queries `POST /api/crops/predict` using Chetan's exact 6-feature payload
+  /// (`N`, `P`, `K`, `temperature`, `humidity`, `ph`).
+  Future<Map<String, dynamic>> predictCropsSixFeatures({
+    required String farmerId,
+    required Map<String, double> soilFeatures,
+  }) async {
+    final payload = buildSixFeaturePayload(soilFeatures);
+    final raw = await _performRequest(
+      'POST',
+      '/api/crops/predict',
+      body: payload,
+    );
+
+    if (raw != null) {
+      try {
+        final decoded = jsonDecode(raw) as Map<String, dynamic>;
+        if (decoded['recommendations'] is List) {
+          return {
+            'farmer_id': farmerId,
+            'generated_at': DateTime.now().toUtc().toIso8601String(),
+            'soil_parameters_used': payload,
+            'source': 'live_fastapi_ml',
+            'recommendations': decoded['recommendations'],
+          };
+        }
+      } catch (_) {
+        // Fall through to offline resilience payload
+      }
+    }
+
+    return fetchCropRecommendationsFromCloud(
+      farmerId: farmerId,
+      soilFeatures: payload,
+    );
+  }
+
+  /// Queries `GET /api/crops/predict/latest` combining Firebase soil telemetry & live weather.
+  Future<Map<String, dynamic>?> fetchLatestCropPredictions({
+    required String farmerId,
+    double latitude = 26.9124,
+    double longitude = 75.7873,
+  }) async {
+    final raw = await _performRequest(
+      'GET',
+      '/api/crops/predict/latest',
+      queryParams: {
+        'latitude': latitude.toString(),
+        'longitude': longitude.toString(),
+      },
+    );
+
+    if (raw == null) return null;
+    try {
+      final decoded = jsonDecode(raw) as Map<String, dynamic>;
+      if (decoded['recommendations'] is List) {
+        return {
+          'farmer_id': farmerId,
+          'generated_at': DateTime.now().toUtc().toIso8601String(),
+          'source': 'live_fastapi_latest',
+          'recommendations': decoded['recommendations'],
+        };
+      }
+    } catch (_) {
+      return null;
+    }
+    return null;
+  }
+
   /// Simulates fetching the latest soil record from Firestore collection "soil_readings".
   /// Corresponds to Chetan's `get_latest_soil_reading()`.
   Future<Map<String, dynamic>?> fetchLatestReadingFromCloud({
     required String farmerId,
     required String deviceId,
   }) async {
-    // In live network mode: http.get(Uri.parse('$baseUrl/api/soil/latest?farmer_id=$farmerId&device_id=$deviceId'))
-    // Returns simulated standard payload matching backend/src/firebase_service.py
     await Future.delayed(const Duration(milliseconds: 300));
     return {
       'id': 'doc_${DateTime.now().millisecondsSinceEpoch}',
@@ -46,7 +226,6 @@ class BackendApiClient {
   /// Simulates posting a validated telemetry record to Chetan's `save_soil_reading()`.
   Future<String> postSoilReadingToCloud(CloudSoilRecordModel record) async {
     await Future.delayed(const Duration(milliseconds: 350));
-    // Payload matching Chetan's backend/src/firebase_service.py: save_soil_reading()
     final payload = {
       'farmer_id': record.farmerId,
       'device_id': record.deviceId,
@@ -112,14 +291,14 @@ class BackendApiClient {
     ].take(limit).toList();
   }
 
-  /// Simulates calling the backend crop recommendation inference API.
+  /// Simulates calling the backend crop recommendation inference API (`POST /api/crops/predict`).
   Future<Map<String, dynamic>> fetchCropRecommendationsFromCloud({
     required String farmerId,
     required Map<String, double> soilFeatures,
   }) async {
     await Future.delayed(const Duration(milliseconds: 400));
     final n = soilFeatures['N'] ?? 80.0;
-    final ph = soilFeatures['pH'] ?? 6.8;
+    final ph = soilFeatures['pH'] ?? soilFeatures['ph'] ?? 6.8;
 
     return {
       'farmer_id': farmerId,
@@ -158,4 +337,3 @@ class BackendApiClient {
     };
   }
 }
-
