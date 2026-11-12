@@ -56,6 +56,39 @@ class CropRecommendationViewModel extends ChangeNotifier {
     }
   }
 
+  /// Queries Chetan's `GET /api/crops/predict/latest` (combined live Firebase
+  /// soil telemetry + live weather) and enriches results via the 22-crop catalog.
+  Future<void> refreshFromLatestCloud(String farmerId) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final latestJson =
+          await repository.apiClient.fetchLatestCropPredictions(farmerId: farmerId);
+      if (latestJson != null) {
+        final parsed = CropRecommendationResult.fromJson(latestJson);
+        _result = CropRecommendationResult(
+          farmerId: parsed.farmerId,
+          generatedAt: parsed.generatedAt,
+          soilParametersUsed: repository.telemetryRepository
+              .computeAggregatedSoilProfile(farmerId),
+          recommendations: parsed.recommendations
+              .take(3)
+              .map(repository.enrichWithKnowledgeBase)
+              .toList(),
+        );
+        return;
+      }
+      _result = await repository.getRecommendationsForFarmer(farmerId, topK: 3);
+    } catch (e) {
+      _errorMessage = 'Failed to sync latest cloud predictions: $e';
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
   /// Manually recalculates recommendation based on what-if soil parameter scenarios.
   Future<void> simulateScenario(
     String farmerId,

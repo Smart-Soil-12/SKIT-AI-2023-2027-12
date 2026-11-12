@@ -55,7 +55,10 @@ class _SmartSoilAppStateState extends State<SmartSoilAppState> {
     hardwareBridge = HardwareBridgeService();
     mlEngine = MLEngineService();
 
-    dashboard = DashboardViewModel()..addListener(_onStateChanged);
+    dashboard = DashboardViewModel(
+      telemetryRepo: telemetryRepo,
+      hardwareBridge: hardwareBridge,
+    )..addListener(_onStateChanged);
     cropVm = CropRecommendationViewModel(repository: cropRepo)
       ..addListener(_onStateChanged);
     weather = WeatherViewModel(apiClient: backendClient)
